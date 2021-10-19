@@ -1,5 +1,3 @@
-import Questions.Question;
-import Questions.QuestionGenerator;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
@@ -8,34 +6,16 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 public class Bot extends TelegramLongPollingBot {
 
-    private QuestionGenerator questionGenerator;
-    private String token;
-    private String username;
-    private boolean firstQuestionFlag = true;
-    private Question question;
+
+    private final String token;
+    private final String username;
+    private final AnswersGenerator answersGenerator;
+
 
     public Bot(String token, String username) {
         this.token = token;
         this.username = username;
-        questionGenerator = new QuestionGenerator();
-    }
-
-    public String getNewMessage(String message) {
-        if (firstQuestionFlag) {
-            question = questionGenerator.getQuestion();
-            firstQuestionFlag = false;
-            return question.question;
-        }
-        else {
-            if (message.equals(question.answer)) {
-                question = questionGenerator.getQuestion();
-                return "Правильно!" + ":" + question.question;
-            }
-            else {
-                question = questionGenerator.getQuestion();
-                return "Неправильно!" + ":" + question.question;
-            }
-        }
+        answersGenerator = new AnswersGenerator();
     }
 
     @Override
@@ -44,17 +24,37 @@ public class Bot extends TelegramLongPollingBot {
             if (update.hasMessage() && update.getMessage().hasText()) {
                 Message inMessage = update.getMessage();
 
-                String s = getNewMessage(inMessage.getText());
-                String[] list = s.split(":"); // строка - Правильно/Неправильно:Следующий вопрос
-                for (String value : list) {
-                    SendMessage outMessage = new SendMessage();
-                    outMessage.setChatId(inMessage.getChatId().toString());
-                    outMessage.setText(value);
+                String answer = getNewAnswer(inMessage.getText());
+                SendMessage outMessage = new SendMessage();
+                outMessage.setChatId(inMessage.getChatId().toString());
+
+                if (answer.contains(":")) {
+                    String[] list = answer.split(":"); // строка - Правильно/Неправильно:Следующий вопрос
+                    for (String value : list) {
+                        outMessage.setText(value);
+                        execute(outMessage);
+                    }
+                }
+                else if (answer.isEmpty()){
+                    outMessage.setText("");
+                }
+                else {
+                    outMessage.setText(answer);
                     execute(outMessage);
                 }
             }
-        } catch (TelegramApiException e) {
+        }
+        catch (TelegramApiException e) {
             e.printStackTrace();
+        }
+    }
+
+    private String getNewAnswer(String message) {
+        if (message.charAt(0) == '/') {
+            return answersGenerator.responseToCommand(message);
+        }
+        else {
+            return answersGenerator.responseToMessage(message);
         }
     }
 
