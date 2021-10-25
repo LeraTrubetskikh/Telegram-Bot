@@ -1,14 +1,15 @@
+import DataIO.IDataIO;
 import Questions.Question;
 import Questions.QuestionGenerator;
 
 public class Bot {
 
-    private Scan scanner;
+    private IDataIO dataIO;
     private boolean runTheProgramFlag;
     private QuestionGenerator questionGenerator;
 
-    public Bot() {
-        scanner = new Scan();
+    public Bot(IDataIO dataIO) {
+        this.dataIO = dataIO;
         runTheProgramFlag = true;
         questionGenerator = new QuestionGenerator();
     }
@@ -22,7 +23,7 @@ public class Bot {
 
     public void startNewGame() {
         String message;
-        Question question = new Question("", "");
+        Question question;
 
         while(runTheProgramFlag) {
             question = questionGenerator.getQuestion();
@@ -39,7 +40,9 @@ public class Bot {
 
     public boolean checkCommand(String str){
         if ("/help".equals(str)) {
-            scanner.printHelp();
+            dataIO.write("Доступные команды: /help просмотр информации о ботe\n" +
+                    "/newgame начать новую игру\n" +
+                    "/stop закончить игру");
             return true;
         } else if ("/newgame".equals(str)) {
             startNewGame();
@@ -52,10 +55,10 @@ public class Bot {
     }
 
     public String getMessage() {
-        return scanner.getLine();
+        return dataIO.read();
     }
 
     public void sendMessage(String str) {
-        scanner.printLine(str);
+        dataIO.write(str);
     }
 }
