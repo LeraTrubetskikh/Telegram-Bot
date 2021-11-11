@@ -1,3 +1,6 @@
+import DataIO.IDataIO;
+import Questions.Question;
+import Questions.QuestionGenerator;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
@@ -6,16 +9,20 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 public class Bot extends TelegramLongPollingBot {
 
-
     private final String token;
     private final String username;
-    private final AnswersGenerator answersGenerator;
+    private IDataIO dataIO;
+    private boolean runTheProgramFlag;
+    private QuestionGenerator questionGenerator;
 
-
-    public Bot(String token, String username) {
+    public Bot(String token, String username, IDataIO dataIO, boolean consoleFlag) {
         this.token = token;
         this.username = username;
-        answersGenerator = new AnswersGenerator();
+        this.dataIO = dataIO;
+        questionGenerator = new QuestionGenerator();
+        runTheProgramFlag = consoleFlag;
+        if (runTheProgramFlag)
+            start();
     }
 
     @Override
@@ -24,7 +31,9 @@ public class Bot extends TelegramLongPollingBot {
             if (update.hasMessage() && update.getMessage().hasText()) {
                 Message inMessage = update.getMessage();
 
-                String answer = getNewAnswer(inMessage.getText());
+                dataIO.write(inMessage.getText());
+                String answer = dataIO.read();
+
                 SendMessage outMessage = new SendMessage();
                 outMessage.setChatId(inMessage.getChatId().toString());
 
@@ -49,15 +58,6 @@ public class Bot extends TelegramLongPollingBot {
         }
     }
 
-    private String getNewAnswer(String message) {
-        if (message.charAt(0) == '/') {
-            return answersGenerator.responseToCommand(message);
-        }
-        else {
-            return answersGenerator.responseToMessage(message);
-        }
-    }
-
     @Override
     public String getBotToken() {
         return token;
@@ -68,4 +68,52 @@ public class Bot extends TelegramLongPollingBot {
         return username;
     }
 
+
+    public void start() {
+        sendMessage("Введите /help");
+        while(runTheProgramFlag) {
+            checkCommand(getMessage());
+        }
+    }
+
+    public void startNewGame() {
+        String message;
+        Question question;
+
+        while(runTheProgramFlag) {
+            question = questionGenerator.getQuestion();
+            sendMessage(question.question);
+            message = getMessage();
+            if(!checkCommand(message)) {
+                if (message.equals(question.answer))
+                    sendMessage("Правильно!");
+                else
+                    sendMessage("Не правильно!");
+            }
+        }
+    }
+
+    public boolean checkCommand(String str){
+        if ("/help".equals(str)) {
+            dataIO.write("Доступные команды: /help просмотр информации о ботe\n" +
+                    "/newgame начать новую игру\n" +
+                    "/stop закончить игру");
+            return true;
+        } else if ("/newgame".equals(str)) {
+            startNewGame();
+            return true;
+        } else if ("/stop".equals(str)) {
+            runTheProgramFlag = false;
+            return true;
+        }
+        return false;
+    }
+
+    public String getMessage() {
+        return dataIO.read();
+    }
+
+    public void sendMessage(String str) {
+        dataIO.write(str);
+    }
 }
