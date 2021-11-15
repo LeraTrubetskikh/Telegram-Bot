@@ -4,7 +4,7 @@ import java.util.Scanner;
 
 public class ConsoleIO implements IDataIO {
 
-    private Scanner scanner;
+    private final Scanner scanner;
     public ConsoleIO(){
         scanner = new Scanner(System.in);
     }
@@ -17,5 +17,13 @@ public class ConsoleIO implements IDataIO {
     @Override
     public void write(String message) {
         System.out.println(message);
+    }
+
+    @Override
+    public void readUpdate(String str){}
+
+    @Override
+    public String getAnswer(){
+        return null;
     }
 }

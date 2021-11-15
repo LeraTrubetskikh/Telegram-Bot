@@ -10,9 +10,31 @@ import java.util.Scanner;
 
 public class TelegramIO implements IDataIO {
     private String message;
+    private final QuestionGenerator questionGenerator;
+    private Question question;
+    private final HashMap<String,String> answers;
+
+    public TelegramIO(){
+        questionGenerator = new QuestionGenerator();
+        answers = new HashMap<>();
+        getAnswers();
+    }
 
     @Override
     public String read() {
+        return null;
+    }
+
+    @Override
+    public void write(String str){}
+
+    @Override
+    public void readUpdate(String message){
+        this.message = message;
+    }
+
+    @Override
+    public String getAnswer() {
         if (message.charAt(0) == '/') {
             message = responseToCommand(message);
         } else {
@@ -21,20 +43,6 @@ public class TelegramIO implements IDataIO {
         return message;
     }
 
-    @Override
-    public void write(String message) {
-        this.message = message;
-    }
-
-    private QuestionGenerator questionGenerator;
-    private Question question;
-    private HashMap<String,String> answers;
-
-    public TelegramIO(){
-        questionGenerator = new QuestionGenerator();
-        answers = new HashMap<>();
-        getAnswer();
-    }
 
     public String responseToCommand(String message) {
         var outputMsg = "";
@@ -68,7 +76,7 @@ public class TelegramIO implements IDataIO {
         }
     }
 
-    private void getAnswer() {
+    private void getAnswers() {
         try {
             FileReader fr = new FileReader("src/main/resources/answers.txt");
             Scanner scan = new Scanner(fr);

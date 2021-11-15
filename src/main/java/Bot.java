@@ -11,16 +11,22 @@ public class Bot extends TelegramLongPollingBot {
 
     private final String token;
     private final String username;
-    private IDataIO dataIO;
+    private final IDataIO dataIO;
     private boolean runTheProgramFlag;
     private QuestionGenerator questionGenerator;
 
-    public Bot(String token, String username, IDataIO dataIO, boolean consoleFlag) {
+    public Bot(String token, String username, IDataIO dataIO) {
         this.token = token;
         this.username = username;
         this.dataIO = dataIO;
         questionGenerator = new QuestionGenerator();
-        runTheProgramFlag = consoleFlag;
+    }
+
+    public Bot(IDataIO dataIO, boolean consoleFlag){
+        this.token = null;
+        this.username = null;
+        this.dataIO = dataIO;
+        this.runTheProgramFlag = consoleFlag;
         if (runTheProgramFlag)
             start();
     }
@@ -31,8 +37,8 @@ public class Bot extends TelegramLongPollingBot {
             if (update.hasMessage() && update.getMessage().hasText()) {
                 Message inMessage = update.getMessage();
 
-                dataIO.write(inMessage.getText());
-                String answer = dataIO.read();
+                dataIO.readUpdate(inMessage.getText());
+                String answer = dataIO.getAnswer();
 
                 SendMessage outMessage = new SendMessage();
                 outMessage.setChatId(inMessage.getChatId().toString());
