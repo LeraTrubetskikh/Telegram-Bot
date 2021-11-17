@@ -36,27 +36,11 @@ public class Bot extends TelegramLongPollingBot {
         try {
             if (update.hasMessage() && update.getMessage().hasText()) {
                 Message inMessage = update.getMessage();
-
-                dataIO.readUpdate(inMessage.getText());
-                String answer = dataIO.getAnswer();
+                dataIO.readUpdate(inMessage);
 
                 SendMessage outMessage = new SendMessage();
-                outMessage.setChatId(inMessage.getChatId().toString());
-
-                if (answer.contains(":")) {
-                    String[] list = answer.split(":"); // строка - Правильно/Неправильно:Следующий вопрос
-                    for (String value : list) {
-                        outMessage.setText(value);
-                        execute(outMessage);
-                    }
-                }
-                else if (answer.isEmpty()){
-                    outMessage.setText("");
-                }
-                else {
-                    outMessage.setText(answer);
-                    execute(outMessage);
-                }
+                outMessage = dataIO.getAnswer();
+                execute(outMessage);
             }
         }
         catch (TelegramApiException e) {
@@ -73,7 +57,6 @@ public class Bot extends TelegramLongPollingBot {
     public String getBotUsername() {
         return username;
     }
-
 
     public void start() {
         sendMessage("Введите /help");

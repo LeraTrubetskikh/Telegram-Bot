@@ -1,10 +1,13 @@
 package DataIO;
 
+import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.objects.Message;
+
 import java.util.Scanner;
 
 public class ConsoleIO implements IDataIO {
 
-    private final Scanner scanner;
+    private Scanner scanner;
     public ConsoleIO(){
         scanner = new Scanner(System.in);
     }
@@ -20,10 +23,10 @@ public class ConsoleIO implements IDataIO {
     }
 
     @Override
-    public void readUpdate(String str){}
+    public void readUpdate(Message message) {}
 
     @Override
-    public String getAnswer(){
+    public SendMessage getAnswer() {
         return null;
     }
 }
