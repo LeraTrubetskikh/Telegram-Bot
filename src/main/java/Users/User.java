@@ -4,7 +4,7 @@ import Questions.Question;
 
 public class User {
 
-    private Long id;
+    private final Long id;
     private int points;
     public Question lastQuestion;
 

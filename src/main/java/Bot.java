@@ -1,6 +1,4 @@
 import DataIO.IDataIO;
-import Questions.Question;
-import Questions.QuestionGenerator;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
@@ -12,22 +10,17 @@ public class Bot extends TelegramLongPollingBot {
     private final String token;
     private final String username;
     private final IDataIO dataIO;
-    private boolean runTheProgramFlag;
-    private QuestionGenerator questionGenerator;
 
     public Bot(String token, String username, IDataIO dataIO) {
         this.token = token;
         this.username = username;
         this.dataIO = dataIO;
-        questionGenerator = new QuestionGenerator();
     }
 
-    public Bot(IDataIO dataIO, boolean consoleFlag){
+    public Bot(IDataIO dataIO){
         this.token = null;
         this.username = null;
         this.dataIO = dataIO;
-        this.runTheProgramFlag = consoleFlag;
-        if (runTheProgramFlag)
             start();
     }
 
@@ -38,8 +31,7 @@ public class Bot extends TelegramLongPollingBot {
                 Message inMessage = update.getMessage();
                 dataIO.readUpdate(inMessage);
 
-                SendMessage outMessage = new SendMessage();
-                outMessage = dataIO.getAnswer();
+                SendMessage outMessage = dataIO.getAnswerMessage();
                 execute(outMessage);
             }
         }
@@ -59,50 +51,11 @@ public class Bot extends TelegramLongPollingBot {
     }
 
     public void start() {
-        sendMessage("Введите /help");
-        while(runTheProgramFlag) {
-            checkCommand(getMessage());
+        dataIO.write("Введите /help");
+        while(true) {
+            dataIO.read();
+            String inputMessage = dataIO.getAnswer();
+            dataIO.write(inputMessage);
         }
-    }
-
-    public void startNewGame() {
-        String message;
-        Question question;
-
-        while(runTheProgramFlag) {
-            question = questionGenerator.getQuestion();
-            sendMessage(question.question);
-            message = getMessage();
-            if(!checkCommand(message)) {
-                if (message.equals(question.answer))
-                    sendMessage("Правильно!");
-                else
-                    sendMessage("Не правильно!");
-            }
-        }
-    }
-
-    public boolean checkCommand(String str){
-        if ("/help".equals(str)) {
-            dataIO.write("Доступные команды: /help просмотр информации о ботe\n" +
-                    "/newgame начать новую игру\n" +
-                    "/stop закончить игру");
-            return true;
-        } else if ("/newgame".equals(str)) {
-            startNewGame();
-            return true;
-        } else if ("/stop".equals(str)) {
-            runTheProgramFlag = false;
-            return true;
-        }
-        return false;
-    }
-
-    public String getMessage() {
-        return dataIO.read();
-    }
-
-    public void sendMessage(String str) {
-        dataIO.write(str);
     }
 }
