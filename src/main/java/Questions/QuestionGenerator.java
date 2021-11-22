@@ -4,14 +4,13 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
-import java.sql.*;
 
 public class QuestionGenerator {
 
-    private ArrayList<Question> questions;
+    private final ArrayList<Question> questions;
 
     public QuestionGenerator() {
-        questions = new ArrayList<Question>();
+        questions = new ArrayList<>();
         getQuestions();
     }
 
