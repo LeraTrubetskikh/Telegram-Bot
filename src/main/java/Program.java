@@ -1,3 +1,4 @@
+import DataIO.ConsoleIO;
 import DataIO.TelegramIO;
 import org.telegram.telegrambots.ApiContextInitializer;
 import org.telegram.telegrambots.meta.TelegramBotsApi;
@@ -11,6 +12,6 @@ public class Program {
                 "@matmex_geographer_bot", new TelegramIO());
         botsApi.registerBot(bot);
 
-        //Bot bot = new Bot(new ConsoleIO(), true); // для работы с консолью
+        //Bot bot = new Bot(new ConsoleIO()); // для работы с консолью
     }
 }
