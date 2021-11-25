@@ -1,27 +1,23 @@
-import DataIO.IDataIO;
+import BotLogic.BotLogic;
+import BotLogic.BotMessage;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
-public class Bot extends TelegramLongPollingBot {
+import java.util.Objects;
+
+public class TelegramBot extends TelegramLongPollingBot {
 
     private final String token;
     private final String username;
-    private final IDataIO dataIO;
+    private final BotLogic botLogic;
 
-    public Bot(String token, String username, IDataIO dataIO) {
+    public TelegramBot(String token, String username, BotLogic botLogic) {
         this.token = token;
         this.username = username;
-        this.dataIO = dataIO;
-    }
-
-    public Bot(IDataIO dataIO){
-        this.token = null;
-        this.username = null;
-        this.dataIO = dataIO;
-            start();
+        this.botLogic = botLogic;
     }
 
     @Override
@@ -29,10 +25,15 @@ public class Bot extends TelegramLongPollingBot {
         try {
             if (update.hasMessage() && update.getMessage().hasText()) {
                 Message inMessage = update.getMessage();
-                dataIO.readUpdate(inMessage);
 
-                SendMessage outMessage = dataIO.getAnswerMessage();
-                execute(outMessage);
+                botLogic.readUpdate(new BotMessage(inMessage.getText(), inMessage.getChatId()));
+                BotMessage newMessage = botLogic.getAnswer();
+
+                SendMessage outMessage = new SendMessage();
+                outMessage.setText(newMessage.getText());
+                outMessage.setChatId(newMessage.getUserId());
+                if (!Objects.equals(newMessage.getText(), ""))
+                    execute(outMessage);
             }
         }
         catch (TelegramApiException e) {
@@ -48,14 +49,5 @@ public class Bot extends TelegramLongPollingBot {
     @Override
     public String getBotUsername() {
         return username;
-    }
-
-    public void start() {
-        dataIO.write("Введите /help");
-        while(true) {
-            dataIO.read();
-            String inputMessage = dataIO.getAnswer();
-            dataIO.write(inputMessage);
-        }
     }
 }

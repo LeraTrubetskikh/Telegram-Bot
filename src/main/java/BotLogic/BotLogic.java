@@ -1,36 +1,32 @@
-package DataIO;
+package BotLogic;
 
 import Questions.Question;
 import Questions.QuestionGenerator;
 import Users.User;
-import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
-import org.telegram.telegrambots.meta.api.objects.Message;
+
 import java.util.HashMap;
 
+public class BotLogic {
 
-public class TelegramIO implements IDataIO {
-    private Message message;
+    private BotMessage message;
     private final HashMap<Long, User> users;
     private final QuestionGenerator questionGenerator;
     private Question question;
-    private boolean gameMode;
 
-    public TelegramIO(){
-        questionGenerator = new QuestionGenerator();
+    public BotLogic(){
+        message = new BotMessage("", 0L);
         users = new HashMap<>();
-        question = new Question("","");
-        gameMode = false;
+        questionGenerator = new QuestionGenerator();
+        question = new Question("", "");
     }
 
-    @Override
-    public void readUpdate(Message message) {
+    public void readUpdate(BotMessage message) {
         this.message = message;
     }
 
-    @Override
-    public SendMessage getAnswerMessage() {
+    public BotMessage getAnswer(){
         String text = message.getText();
-        Long id = message.getChatId();
+        Long id = message.getUserId();
 
         if (!users.containsKey(id)) {
             users.put(id, new User(id));
@@ -38,26 +34,25 @@ public class TelegramIO implements IDataIO {
             question = users.get(id).lastQuestion;
         }
 
-        if (text.charAt(0) == '/') {
+        if (!text.isEmpty() && text.charAt(0) == '/') {
             text = responseToCommand(text);
         }
-        else if (gameMode){
+        else if(users.get(id).gameMode){
             text = responseToMessage(text);
         }
         else {
             text = "Для начала введите /start";
         }
         users.get(id).setQuestion(question);
-        SendMessage newMessage = new SendMessage();
-        newMessage.setChatId(message.getChatId().toString());
+        BotMessage newMessage = new BotMessage("", 0L);
+        newMessage.setUserId(message.getUserId());
         newMessage.setText(text);
         return newMessage;
     }
 
-
-    private String responseToCommand(String message) {
+    private String responseToCommand(String text) {
         var outputMsg = "";
-        switch (message) {
+        switch (text) {
             case ("/start"):
                 outputMsg = "Привет! Я бот для изучения столиц стран мира.\n" +
                         "Чтобы посмотреть список моих комманд, введите /help";
@@ -68,10 +63,10 @@ public class TelegramIO implements IDataIO {
                         "/stop - остановить игру";
                 break;
             case ("/stop"):
-                gameMode = false;
+                users.get(message.getUserId()).gameMode = false;
                 break;
             case ("/newgame"):
-                gameMode = true;
+                users.get(message.getUserId()).gameMode = true;
                 question = questionGenerator.getQuestion();
                 outputMsg = question.question;
                 break;
@@ -90,18 +85,5 @@ public class TelegramIO implements IDataIO {
             question = questionGenerator.getQuestion();
             return "Неправильно!" + "\n" + question.question;
         }
-    }
-
-    @Override
-    public void read() {
-    }
-
-    @Override
-    public void write(String message) {
-    }
-
-    @Override
-    public String getAnswer(){
-        return null;
     }
 }

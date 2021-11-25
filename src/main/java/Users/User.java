@@ -7,11 +7,13 @@ public class User {
     private final Long id;
     private int points;
     public Question lastQuestion;
+    public Boolean gameMode;
 
     public User(Long id) {
         this.id = id;
         points = 0;
         lastQuestion = new Question("", "");
+        gameMode = false;
     }
 
     public Long getID() { return id; }
