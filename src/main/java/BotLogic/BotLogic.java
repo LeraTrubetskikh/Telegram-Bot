@@ -17,7 +17,7 @@ public class BotLogic {
         message = new BotMessage("", 0L);
         users = new HashMap<>();
         questionGenerator = new QuestionGenerator();
-        question = new Question("", "");
+        question = new Question();
     }
 
     public void readUpdate(BotMessage message) {
@@ -67,8 +67,8 @@ public class BotLogic {
                 break;
             case ("/newgame"):
                 users.get(message.getUserId()).gameMode = true;
-                question = questionGenerator.getQuestion();
-                outputMsg = question.question;
+                question = questionGenerator.getQuestion("Европа");
+                outputMsg = question.getQuestion();
                 break;
             default:
                 outputMsg = "Это не команда";
@@ -78,12 +78,12 @@ public class BotLogic {
     }
 
     private String responseToMessage(String msg){
-        if (msg.equals(question.answer)) {
-            question = questionGenerator.getQuestion();
-            return "Правильно!" + "\n" + question.question;
+        if (msg.equals(question.getAnswer())) {
+            question = questionGenerator.getQuestion("Европа");
+            return "Правильно!" + "\n" + question.getQuestion();
         } else {
-            question = questionGenerator.getQuestion();
-            return "Неправильно!" + "\n" + question.question;
+            question = questionGenerator.getQuestion("Европа");
+            return "Неправильно!" + "\n" + question.getQuestion();
         }
     }
 }

@@ -1,0 +1,929 @@
+{
+  "Европа": [
+    {
+      "country": "Нидерланды",
+      "countryGenitive": "Нидерландов",
+      "capital": "Амстердам"
+    },
+    {
+      "country": "Андорра",
+      "countryGenitive": "Андорры",
+      "capital": "Андорра-ла-Велья"
+    },
+    {
+      "country": "Греция",
+      "countryGenitive": "Греции",
+      "capital": "Афины"
+    },
+    {
+      "country": "Сербия",
+      "countryGenitive": "Сербии",
+      "capital": "Белград"
+    },
+    {
+      "country": "Германия",
+      "countryGenitive": "Германии",
+      "capital": "Берлин"
+    },
+    {
+      "country": "Швейцария",
+      "countryGenitive": "Швейцарии",
+      "capital": "Берн"
+    },
+    {
+      "country": "Словакия",
+      "countryGenitive": "Словакии",
+      "capital": "Братислава"
+    },
+    {
+      "country": "Бельгия",
+      "countryGenitive": "Бельгии",
+      "capital": "Брюссель"
+    },
+    {
+      "country": "Венгрия",
+      "countryGenitive": "Венгрии",
+      "capital": "Будапешт"
+    },
+    {
+      "country": "Румыния",
+      "countryGenitive": "Румынии",
+      "capital": "Бухарест"
+    },
+    {
+      "country": "Лихтенштейн",
+      "countryGenitive": "Лихтенштейна",
+      "capital": "Вадуц"
+    },
+    {
+      "country": "Мальта",
+      "countryGenitive": "Мальты",
+      "capital": "Валлетта"
+    },
+    {
+      "country": "Польша",
+      "countryGenitive": "Польши",
+      "capital": "Варшава"
+    },
+    {
+      "country": "Ватикан",
+      "countryGenitive": "Ватикана",
+      "capital": "Ватикан"
+    },
+    {
+      "country": "Австрия",
+      "countryGenitive": "Австрии",
+      "capital": "Вена"
+    },
+    {
+      "country": "Литва",
+      "countryGenitive": "Литвы",
+      "capital": "Вильнюс"
+    },
+    {
+      "country": "Ирландия",
+      "countryGenitive": "Ирландии",
+      "capital": "Дублин"
+    },
+    {
+      "country": "Хорватия",
+      "countryGenitive": "Хорватии",
+      "capital": "Загреб"
+    },
+    {
+      "country": "Украина",
+      "countryGenitive": "Украины",
+      "capital": "Киев"
+    },
+    {
+      "country": "Молдавия",
+      "countryGenitive": "Молдавии",
+      "capital": "Кишинёв"
+    },
+    {
+      "country": "Дания",
+      "countryGenitive": "Дании",
+      "capital": "Копенгаген"
+    },
+    {
+      "country": "Португалия",
+      "countryGenitive": "Португалии",
+      "capital": "Лиссабон"
+    },
+    {
+      "country": "Великобритания",
+      "countryGenitive": "Великобритании",
+      "capital": "Лондон"
+    },
+    {
+      "country": "Словения",
+      "countryGenitive": "Словении",
+      "capital": "Любляна"
+    },
+    {
+      "country": "Люксембург",
+      "countryGenitive": "Люксембарга",
+      "capital": "Люксембург"
+    },
+    {
+      "country": "Испания",
+      "countryGenitive": "Испании",
+      "capital": "Мадрид"
+    },
+    {
+      "country": "Беларусь",
+      "countryGenitive": "Беларуси",
+      "capital": "Минск"
+    },
+    {
+      "country": "Монако",
+      "countryGenitive": "Монако",
+      "capital": "Монако"
+    },
+    {
+      "country": "Россия",
+      "countryGenitive": "России",
+      "capital": "Москва"
+    },
+    {
+      "country": "Норвегия",
+      "countryGenitive": "Норвегии",
+      "capital": "Осло"
+    },
+    {
+      "country": "Франция",
+      "countryGenitive": "Франции",
+      "capital": "Париж"
+    },
+    {
+      "country": "Черногория",
+      "countryGenitive": "Черногории",
+      "capital": "Подгорица"
+    },
+    {
+      "country": "Чехия",
+      "countryGenitive": "Чехии",
+      "capital": "Прага"
+    },
+    {
+      "country": "Исландия",
+      "countryGenitive": "Исландии",
+      "capital": "Рейкьявик"
+    },
+    {
+      "country": "Латвия",
+      "countryGenitive": "Латвии",
+      "capital": "Рига"
+    },
+    {
+      "country": "Италия",
+      "countryGenitive": "Италии",
+      "capital": "Рим"
+    },
+    {
+      "country": "Сан-Марино",
+      "countryGenitive": "Сан-Марино",
+      "capital": "Сан-Марино"
+    },
+    {
+      "country": "Босния и Герцеговина",
+      "countryGenitive": "Боснии и Герцеговины",
+      "capital": "Сараево"
+    },
+    {
+      "country": "Северная Македония",
+      "countryGenitive": "Северной Македонии",
+      "capital": "Скопье"
+    },
+    {
+      "country": "Болгария",
+      "countryGenitive": "Болгарии",
+      "capital": "София"
+    },
+    {
+      "country": "Швеция",
+      "countryGenitive": "Швеции",
+      "capital": "Стокгольм"
+    },
+    {
+      "country": "Эстония",
+      "countryGenitive": "Эстонии",
+      "capital": "Таллин"
+    },
+    {
+      "country": "Албания",
+      "countryGenitive": "Албании",
+      "capital": "Тирана"
+    },
+    {
+      "country": "Финляндия",
+      "countryGenitive": "Финляндии",
+      "capital": "Хельсинки"
+    }
+  ],
+  "Азия": [
+    {
+      "country": "ОАЭ",
+      "countryGenitive": "ОАЭ",
+      "capital": "Абу-Даби"
+    },
+    {
+      "country": "Иордания",
+      "countryGenitive": "Иордании",
+      "capital": "Амман"
+    },
+    {
+      "country": "Турция",
+      "countryGenitive": "Турции",
+      "capital": "Анкара"
+    },
+    {
+      "country": "Туркмения",
+      "countryGenitive": "Туркмении",
+      "capital": "Ашхабад"
+    },
+    {
+      "country": "Ирак",
+      "countryGenitive": "Ирака",
+      "capital": "Багдад"
+    },
+    {
+      "country": "Азербайджан",
+      "countryGenitive": "Азербайджана",
+      "capital": "Баку"
+    },
+    {
+      "country": "Таиланд",
+      "countryGenitive": "Тайланда",
+      "capital": "Бангкок"
+    },
+    {
+      "country": "Бруней",
+      "countryGenitive": "Брунея",
+      "capital": "Бандар-Сери-Бегаван"
+    },
+    {
+      "country": "Ливан",
+      "countryGenitive": "Ливана",
+      "capital": "Бейрут"
+    },
+    {
+      "country": "Киргизия",
+      "countryGenitive": "Киргизии",
+      "capital": "Бишкек"
+    },
+    {
+      "country": "Лаос",
+      "countryGenitive": "Лаоса",
+      "capital": "Вьентьян"
+    },
+    {
+      "country": "Бангладеш",
+      "countryGenitive": "Бангладеша",
+      "capital": "Дакка"
+    },
+    {
+      "country": "Сирия",
+      "countryGenitive": "Сирии",
+      "capital": "Дамаск"
+    },
+    {
+      "country": "Индия",
+      "countryGenitive": "Индии",
+      "capital": "Нью-Дели"
+    },
+    {
+      "country": "Индонезия",
+      "countryGenitive": "Индонезии",
+      "capital": "Джакарта"
+    },
+    {
+      "country": "Восточный Тимор",
+      "countryGenitive": "Восточного Тимора",
+      "capital": "Дили"
+    },
+    {
+      "country": "Катар",
+      "countryGenitive": "Катара",
+      "capital": "Доха"
+    },
+    {
+      "country": "Таджикистан",
+      "countryGenitive": "Таджикистана",
+      "capital": "Душанбе"
+    },
+    {
+      "country": "Армения",
+      "countryGenitive": "Армении",
+      "capital": "Ереван"
+    },
+    {
+      "country": "Израиль",
+      "countryGenitive": "Израиля",
+      "capital": "Иерусалим"
+    },
+    {
+      "country": "Пакистан",
+      "countryGenitive": "Пакистана",
+      "capital": "Исламабад"
+    },
+    {
+      "country": "Афганистан",
+      "countryGenitive": "Афганистана",
+      "capital": "Кабул"
+    },
+    {
+      "country": "Непал",
+      "countryGenitive": "Непала",
+      "capital": "Катманду"
+    },
+    {
+      "country": "Малайзия",
+      "countryGenitive": "Малайзии",
+      "capital": "Куала-Лумпур"
+    },
+    {
+      "country": "Мальдивы",
+      "countryGenitive": "Мальдив",
+      "capital": "Мале"
+    },
+    {
+      "country": "Бахрейн",
+      "countryGenitive": "Бахрейна",
+      "capital": "Манама"
+    },
+    {
+      "country": "Филиппины",
+      "countryGenitive": "Филлипин",
+      "capital": "Манила"
+    },
+    {
+      "country": "Оман",
+      "countryGenitive": "Омана",
+      "capital": "Маскат"
+    },
+    {
+      "country": "Мьянма",
+      "countryGenitive": "Мьянмы",
+      "capital": "Нейпьидо"
+    },
+    {
+      "country": "Кипр",
+      "countryGenitive": "Кипра",
+      "capital": "Никосия"
+    },
+    {
+      "country": "Казахстан",
+      "countryGenitive": "Казахстана",
+      "capital": "Нур-Султан"
+    },
+    {
+      "country": "Китай",
+      "countryGenitive": "Китая",
+      "capital": "Пекин"
+    },
+    {
+      "country": "Камбоджа",
+      "countryGenitive": "Камбоджи",
+      "capital": "Пномпень"
+    },
+    {
+      "country": "КНДР",
+      "countryGenitive": "КНДР",
+      "capital": "Пхеньян"
+    },
+    {
+      "country": "Йемен",
+      "countryGenitive": "Йемена",
+      "capital": "Сана"
+    },
+    {
+      "country": "Республика Корея",
+      "countryGenitive": "Республики Корея",
+      "capital": "Сеул"
+    },
+    {
+      "country": "Сингапур",
+      "countryGenitive": "Сингапура",
+      "capital": "Сингапур"
+    },
+    {
+      "country": "Узбекистан",
+      "countryGenitive": "Узбекистана",
+      "capital": "Ташкент"
+    },
+    {
+      "country": "Грузия",
+      "countryGenitive": "Грузии",
+      "capital": "Тбилиси"
+    },
+    {
+      "country": "Иран",
+      "countryGenitive": "Ирана",
+      "capital": "Тегеран"
+    },
+    {
+      "country": "Япония",
+      "countryGenitive": "Японии",
+      "capital": "Токио"
+    },
+    {
+      "country": "Бутан",
+      "countryGenitive": "Бутана",
+      "capital": "Тхимпху"
+    },
+    {
+      "country": "Монголия",
+      "countryGenitive": "Монголии",
+      "capital": "Улан-Батор"
+    },
+    {
+      "country": "Вьетнам",
+      "countryGenitive": "Вьетнама",
+      "capital": "Ханой"
+    },
+    {
+      "country": "Шри-Ланка",
+      "countryGenitive": "Шри-Ланки",
+      "capital": "Шри-Джаяварденепура-Котте"
+    },
+    {
+      "country": "Кувейт",
+      "countryGenitive": "Кувейта",
+      "capital": "Эль-Кувейт"
+    },
+    {
+      "country": "Саудовская Аравия",
+      "countryGenitive": "Саудовской Аравии",
+      "capital": "Эр-Рияд"
+    }
+  ],
+  "Америка": [
+    {
+      "country": "Парагвай",
+      "countryGenitive": "Парагвая",
+      "capital": "Асунсьон"
+    },
+    {
+      "country": "Белиз",
+      "countryGenitive": "Белиза",
+      "capital": "Бельмопан"
+    },
+    {
+      "country": "Колумбия",
+      "countryGenitive": "Колумбии",
+      "capital": "Богота"
+    },
+    {
+      "country": "Бразилия",
+      "countryGenitive": "Бразилии",
+      "capital": "Бразилиа"
+    },
+    {
+      "country": "Барбадос",
+      "countryGenitive": "Барбадос",
+      "capital": "Бриджтаун"
+    },
+    {
+      "country": "Аргентина",
+      "countryGenitive": "Аргенитины",
+      "capital": "Буэнос-Айрес"
+    },
+    {
+      "country": "США",
+      "countryGenitive": "США",
+      "capital": "Вашингтон"
+    },
+    {
+      "country": "Куба",
+      "countryGenitive": "Кубы",
+      "capital": "Гавана"
+    },
+    {
+      "country": "Гватемала",
+      "countryGenitive": "Гватемалы",
+      "capital": "Гватемала"
+    },
+    {
+      "country": "Гайана",
+      "countryGenitive": "Гайаны",
+      "capital": "Джорджтаун"
+    },
+    {
+      "country": "Венесуэла",
+      "countryGenitive": "Венесуэллы",
+      "capital": "Каракас"
+    },
+    {
+      "country": "Сент-Люсия",
+      "countryGenitive": "Сент-Люсии",
+      "capital": "Кастри"
+    },
+    {
+      "country": "Сент-Винсент и Гренадины",
+      "countryGenitive": "Сент-Винсента и Гренадины",
+      "capital": "Кингстаун"
+    },
+    {
+      "country": "Ямайка",
+      "countryGenitive": "Ямайки",
+      "capital": "Кингстон"
+    },
+    {
+      "country": "Эквадор",
+      "countryGenitive": "Эквадора",
+      "capital": "Кито"
+    },
+    {
+      "country": "Перу",
+      "countryGenitive": "Перу",
+      "capital": "Лима"
+    },
+    {
+      "country": "Никарагуа",
+      "countryGenitive": "Никарагуа",
+      "capital": "Манагуа"
+    },
+    {
+      "country": "Мексика",
+      "countryGenitive": "Мексики",
+      "capital": "Мехико"
+    },
+    {
+      "country": "Уругвай",
+      "countryGenitive": "Уругвая",
+      "capital": "Монтевидео"
+    },
+    {
+      "country": "Багамские Острова",
+      "countryGenitive": "Багамских Островов",
+      "capital": "Нассау"
+    },
+    {
+      "country": "Канада",
+      "countryGenitive": "Канады",
+      "capital": "Оттава"
+    },
+    {
+      "country": "Панама",
+      "countryGenitive": "Панамы",
+      "capital": "Панама"
+    },
+    {
+      "country": "Суринам",
+      "countryGenitive": "Суринам",
+      "capital": "Парамарибо"
+    },
+    {
+      "country": "Гаити",
+      "countryGenitive": "Гаити",
+      "capital": "Порт-о-Пренс"
+    },
+    {
+      "country": "Доминика",
+      "countryGenitive": "Доминики",
+      "capital": "Розо"
+    },
+    {
+      "country": "Сальвадор",
+      "countryGenitive": "Сальвадора",
+      "capital": "Сан-Сальвадор"
+    },
+    {
+      "country": "Коста-Рика",
+      "countryGenitive": "Коста-Рики",
+      "capital": "Сан-Хосе"
+    },
+    {
+      "country": "Доминиканская Республика",
+      "countryGenitive": "Доминиканской Республики",
+      "capital": "Санто-Доминго"
+    },
+    {
+      "country": "Чили",
+      "countryGenitive": "Чили",
+      "capital": "Сантьяго"
+    },
+    {
+      "country": "Гренада",
+      "countryGenitive": "Гренада",
+      "capital": "Сент-Джорджес"
+    },
+    {
+      "country": "Боливия",
+      "countryGenitive": "Боливии",
+      "capital": "Сукре"
+    },
+    {
+      "country": "Гондурас",
+      "countryGenitive": "Гондураса",
+      "capital": "Тегусигальпа"
+    }
+  ],
+  "Африка" : [
+    {
+      "country": "Нигерия",
+      "countryGenitive": "Нигерии",
+      "capital": "Абуджа"
+    },
+    {
+      "country": "Эфиопия",
+      "countryGenitive": "Эфиопии",
+      "capital": "Аддис-Абеба"
+    },
+    {
+      "country": "Гана",
+      "countryGenitive": "Ганы",
+      "capital": "Аккра"
+    },
+    {
+      "country": "Алжир",
+      "countryGenitive": "Алжира",
+      "capital": "Алжир"
+    },
+    {
+      "country": "Мадагаскар",
+      "countryGenitive": "Мадагаскара",
+      "capital": "Антананариву"
+    },
+    {
+      "country": "Эритрея",
+      "countryGenitive": "Эритреи",
+      "capital": "Асмэра"
+    },
+    {
+      "country": "Мали",
+      "countryGenitive": "Мали",
+      "capital": "Бамако"
+    },
+    {
+      "country": "ЦАР",
+      "countryGenitive": "ЦАР",
+      "capital": "Банги"
+    },
+    {
+      "country": "Гамбия",
+      "countryGenitive": "Гамбии",
+      "capital": "Банжул"
+    },
+    {
+      "country": "Республика Конго",
+      "countryGenitive": "Республики Конго",
+      "capital": "Браззавиль"
+    },
+    {
+      "country": "Сейшельские Острова",
+      "countryGenitive": "Сейшельских Островов",
+      "capital": "Виктория"
+    },
+    {
+      "country": "Намибия",
+      "countryGenitive": "Намибии",
+      "capital": "Виндхук"
+    },
+    {
+      "country": "Ботсвана",
+      "countryGenitive": "Ботсваны",
+      "capital": "Габороне"
+    },
+    {
+      "country": "Бурунди",
+      "countryGenitive": "Бурунди",
+      "capital": "Гитега"
+    },
+    {
+      "country": "Сенегал",
+      "countryGenitive": "Сенегала",
+      "capital": "Дакар"
+    },
+    {
+      "country": "Джибути",
+      "countryGenitive": "Джибути",
+      "capital": "Джибути"
+    },
+    {
+      "country": "Южный Судан",
+      "countryGenitive": "Южного Судана",
+      "capital": "Джуба"
+    },
+    {
+      "country": "Танзания",
+      "countryGenitive": "Танзании",
+      "capital": "Додома"
+    },
+    {
+      "country": "Египет",
+      "countryGenitive": "Египта",
+      "capital": "Каир"
+    },
+    {
+      "country": "Уганда",
+      "countryGenitive": "Уганды",
+      "capital": "Кампала"
+    },
+    {
+      "country": "Руанда",
+      "countryGenitive": "Руанды",
+      "capital": "Кигали"
+    },
+    {
+      "country": "ДР Конго",
+      "countryGenitive": "ДР Конго",
+      "capital": "Киншаса"
+    },
+    {
+      "country": "Гвинея",
+      "countryGenitive": "Гвинеи",
+      "capital": "Конакри"
+    },
+    {
+      "country": "Габон",
+      "countryGenitive": "Габона",
+      "capital": "Либревиль"
+    },
+    {
+      "country": "Малави",
+      "countryGenitive": "Малави",
+      "capital": "Лилонгве"
+    },
+    {
+      "country": "Того",
+      "countryGenitive": "Того",
+      "capital": "Ломе"
+    },
+    {
+      "country": "Ангола",
+      "countryGenitive": "Анголы",
+      "capital": "Луанда"
+    },
+    {
+      "country": "Замбия",
+      "countryGenitive": "Замбии",
+      "capital": "Лусака"
+    },
+    {
+      "country": "Экваториальная Гвинея",
+      "countryGenitive": "Экваториальной Гвинеи",
+      "capital": "Малабо"
+    },
+    {
+      "country": "Мозамбик",
+      "countryGenitive": "Мозамбика",
+      "capital": "Мапуту"
+    },
+    {
+      "country": "Лесото",
+      "countryGenitive": "Лесото",
+      "capital": "Масеру"
+    },
+    {
+      "country": "Сомали",
+      "countryGenitive": "Сомали",
+      "capital": "Могадишо"
+    },
+    {
+      "country": "Либерия",
+      "countryGenitive": "Либерии",
+      "capital": "Монровия"
+    },
+    {
+      "country": "Коморы",
+      "countryGenitive": "Коморы",
+      "capital": "Морони"
+    },
+    {
+      "country": "Кения",
+      "countryGenitive": "Кении",
+      "capital": "Найроби"
+    },
+    {
+      "country": "Чад",
+      "countryGenitive": "Чада",
+      "capital": "Нджамена"
+    },
+    {
+      "country": "Мавритания",
+      "countryGenitive": "Мавритании",
+      "capital": "Нуакшот"
+    },
+    {
+      "country": "Бенин",
+      "countryGenitive": "Бенина",
+      "capital": "Порто-Ново"
+    },
+    {
+      "country": "Кабо-Верде",
+      "countryGenitive": "Кабо-Верде",
+      "capital": "Прая"
+    },
+    {
+      "country": "ЮАР",
+      "countryGenitive": "ЮАР",
+      "capital": "Претория"
+    },
+    {
+      "country": "Марокко",
+      "countryGenitive": "Марокко",
+      "capital": "Рабат"
+    },
+    {
+      "country": "Ливия",
+      "countryGenitive": "Ливии",
+      "capital": "Триполи"
+    },
+    {
+      "country": "Тунис",
+      "countryGenitive": "Туниса",
+      "capital": "Тунис"
+    },
+    {
+      "country": "Сьерра-Леоне",
+      "countryGenitive": "Сьерра-Леоне",
+      "capital": "Фритаун"
+    },
+    {
+      "country": "Зимбабве",
+      "countryGenitive": "Зимбабве",
+      "capital": "Хараре"
+    },
+    {
+      "country": "Судан",
+      "countryGenitive": "Судана",
+      "capital": "Хартум"
+    },
+    {
+      "country": "Камерун",
+      "countryGenitive": "Камеруна",
+      "capital": "Яунде"
+    }
+  ],
+  "Австралия и Океания": [
+    {
+      "country": "Самоа",
+      "countryGenitive": "Самоа",
+      "capital": "Апиа"
+    },
+    {
+      "country": "Новая Зеландия",
+      "countryGenitive": "Новой Зеландии",
+      "capital": "Веллингтон"
+    },
+    {
+      "country": "Австралия",
+      "countryGenitive": "Австралии",
+      "capital": "Канберра"
+    },
+    {
+      "country": "Маршалловы Острова",
+      "countryGenitive": "Маршалловых Островов",
+      "capital": "Маджуро"
+    },
+    {
+      "country": "Палау",
+      "countryGenitive": "Палау",
+      "capital": "Нгерулмуд"
+    },
+    {
+      "country": "Тонга",
+      "countryGenitive": "Тонги",
+      "capital": "Нукуалофа"
+    },
+    {
+      "country": "Микронезия",
+      "countryGenitive": "Микронезии",
+      "capital": "Паликир"
+    },
+    {
+      "country": "Вануату",
+      "countryGenitive": "Вануату",
+      "capital": "Порт-Вила"
+    },
+    {
+      "country": "Новая Гвинея",
+      "countryGenitive": "Новой Гвинеи",
+      "capital": "Порт-Морсби"
+    },
+    {
+      "country": "Фиджи",
+      "countryGenitive": "Фиджи",
+      "capital": "Сува"
+    },
+    {
+      "country": "Тувалу",
+      "countryGenitive": "Тувалу",
+      "capital": "Фунафути"
+    },
+    {
+      "country": "Соломоновы Острова",
+      "countryGenitive": "Соломоновых Островов",
+      "capital": "Хониара"
+    },
+    {
+      "country": "Кирибати",
+      "countryGenitive": "Кирибати",
+      "capital": "Южная Тарава"
+    }
+  ]
+}
+
+

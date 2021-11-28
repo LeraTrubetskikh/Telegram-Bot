@@ -1,41 +1,35 @@
 package Questions;
 
+import com.google.common.reflect.TypeToken;
+import com.google.gson.Gson;
+
 import java.io.FileReader;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Scanner;
+import java.lang.reflect.Type;
+import java.util.HashMap;
+import java.util.List;
 
 public class QuestionGenerator {
+    public Gson gson;
+    public HashMap<String, List<Question>> questions;
 
-    private final ArrayList<Question> questions;
 
     public QuestionGenerator() {
-        questions = new ArrayList<>();
-        getQuestions();
+        gson = new Gson();
+        questions = new HashMap<>();
+        try (FileReader reader = new FileReader("src/main/resources/q.json")) {
+            Type type = new TypeToken<HashMap<String, List<Question>>>(){}.getType();
+            questions = gson.fromJson(reader, type);
+        }
+        catch (Exception e) {
+            System.out.println(e.toString());
+        }
     }
 
     private int getRandomNumber(int to) {
         return (int)(Math.random() * to);
     }
 
-    public Question getQuestion(){
-        return questions.get(getRandomNumber(questions.size() - 1));
-    }
-
-    private void getQuestions() {
-        try {
-            FileReader fr = new FileReader("src/main/resources/questions.txt");
-            Scanner scan = new Scanner(fr);
-
-            String[] s;
-            while(scan.hasNextLine()){
-                s = scan.nextLine().split(":");
-                questions.add(new Question(s[0], s[1]));
-            }
-            fr.close();
-        }
-        catch(IOException ex){
-            System.out.println(ex.getMessage());
-        }
+    public Question getQuestion(String region){
+        return questions.get(region).get(getRandomNumber(questions.get(region).size() - 1));
     }
 }

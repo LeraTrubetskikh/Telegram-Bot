@@ -8,12 +8,14 @@ public class User {
     private int points;
     public Question lastQuestion;
     public Boolean gameMode;
+    public String region;
 
     public User(Long id) {
         this.id = id;
         points = 0;
-        lastQuestion = new Question("", "");
+        lastQuestion = new Question();
         gameMode = false;
+        region = "";
     }
 
     public Long getID() { return id; }
