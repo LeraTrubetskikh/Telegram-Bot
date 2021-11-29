@@ -5,31 +5,39 @@ import com.google.gson.Gson;
 
 import java.io.FileReader;
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 public class QuestionGenerator {
     public Gson gson;
     public HashMap<String, List<Question>> questions;
+    private ArrayList<Integer> permutation;
 
 
     public QuestionGenerator() {
         gson = new Gson();
         questions = new HashMap<>();
+        permutation = new ArrayList<>();
         try (FileReader reader = new FileReader("src/main/resources/q.json")) {
             Type type = new TypeToken<HashMap<String, List<Question>>>(){}.getType();
             questions = gson.fromJson(reader, type);
         }
         catch (Exception e) {
-            System.out.println(e.toString());
+            System.out.println(e);
         }
     }
 
-    private int getRandomNumber(int to) {
-        return (int)(Math.random() * to);
+    public void getPermutation(String region) {
+        permutation = new ArrayList<>();
+        for (int i = 0;i < questions.get(region).size(); i++)
+            permutation.add(i);
+        java.util.Collections.shuffle(permutation);
     }
 
     public Question getQuestion(String region){
-        return questions.get(region).get(getRandomNumber(questions.get(region).size() - 1));
+        var index = permutation.get(permutation.size() - 1);
+        permutation.remove(permutation.size() - 1);
+        return questions.get(region).get(index);
     }
 }

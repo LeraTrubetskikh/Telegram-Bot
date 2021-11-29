@@ -82,6 +82,7 @@ public class BotLogic {
         if (Arrays.asList(regions).contains(msg)){
             users.get(userId).resetScore();
             users.get(userId).region = msg;
+            questionGenerator.getPermutation(msg);
             question = questionGenerator.getQuestion(msg);
             return question.getQuestion();
         }
