@@ -65,8 +65,13 @@ public class BotLogic {
                         "/stop - остановить игру\n" +
                         "/stat - статистика по всем регионам";
             case ("/stop"):
-                users.get(userId).gameMode = false;
-                return String.format("Ваш счёт: %d", users.get(userId).getScore());
+                if (users.get(userId).gameMode){
+                    users.get(userId).gameMode = false;
+                    return String.format("Ваш счёт: %d", users.get(userId).getScore());
+                }
+                else {
+                    return "Для начала введите /start";
+                }
             case ("/newgame"):
                 users.get(userId).gameMode = true;
                 return "Выберите регион: \nЕвропа,\nАзия,\nАмерика,\nАфрика,\nАвстралия и Океания";
