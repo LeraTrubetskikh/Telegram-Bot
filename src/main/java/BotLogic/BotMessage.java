@@ -3,6 +3,7 @@ package BotLogic;
 public class BotMessage {
     private String text;
     private Long userId;
+    private Boolean gameMode;
 
     public BotMessage(String text, Long userId){
         this.text = text;
@@ -23,5 +24,13 @@ public class BotMessage {
 
     public String getText() {
         return text;
+    }
+
+    public void setGameMode(Boolean gameMode) {
+        this.gameMode = gameMode;
+    }
+
+    public Boolean getGameMode() {
+        return gameMode;
     }
 }

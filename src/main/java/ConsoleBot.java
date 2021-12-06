@@ -17,8 +17,7 @@ public class ConsoleBot {
         BotMessage message = new BotMessage("", 0L);
         while(true){
             message.setText(scanner.nextLine());
-            botLogic.readUpdate(message);
-            message = botLogic.getAnswer();
+            message = botLogic.handler(message);
             System.out.println(message.getText());
         }
     }

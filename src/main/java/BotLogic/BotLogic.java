@@ -9,7 +9,6 @@ import java.util.HashMap;
 
 public class BotLogic {
 
-    private BotMessage message;
     private final HashMap<Long, User> users;
     private Long userId;
     private final QuestionGenerator questionGenerator;
@@ -17,18 +16,13 @@ public class BotLogic {
     private final String[] regions;
 
     public BotLogic(){
-        message = new BotMessage("", 0L);
         users = new HashMap<>();
         questionGenerator = new QuestionGenerator();
         question = new Question();
         regions = new String[]{"Европа", "Азия", "Америка", "Африка", "Австралия и Океания"};
     }
 
-    public void readUpdate(BotMessage message) {
-        this.message = message; // а этот метод вообще нужен? типа можно же просто сразу передовать это сообщение в getanswer
-    }
-
-    public BotMessage getAnswer(){
+    public BotMessage handler(BotMessage message){
         String text = message.getText();
         userId = message.getUserId();
 
@@ -48,9 +42,8 @@ public class BotLogic {
             text = "Для начала введите /start";
         }
         users.get(userId).setQuestion(question);
-        BotMessage newMessage = new BotMessage("", 0L);
-        newMessage.setUserId(message.getUserId());
-        newMessage.setText(text);
+        BotMessage newMessage = new BotMessage(text, message.getUserId());
+        newMessage.setGameMode(users.get(userId).gameMode);
         return newMessage;
     }
 
@@ -72,9 +65,9 @@ public class BotLogic {
                 else {
                     return "Для начала введите /start";
                 }
-            case ("/newgame"):
+            case ("/newgame"):{
                 users.get(userId).gameMode = true;
-                return "Выберите регион: \nЕвропа,\nАзия,\nАмерика,\nАфрика,\nАвстралия и Океания";
+                return "Выберите регион: \nЕвропа,\nАзия,\nАмерика,\nАфрика,\nАвстралия и Океания";}
                 // тут все вылетает когда неправильно вводишь название региона
             case ("/stat"):
                 return users.get(userId).getStat();
@@ -87,7 +80,6 @@ public class BotLogic {
         if (Arrays.asList(regions).contains(msg)){
             users.get(userId).resetScore();
             users.get(userId).region = msg;
-            questionGenerator.getPermutation(msg);
             question = questionGenerator.getQuestion(msg);
             return question.getQuestion();
         }
