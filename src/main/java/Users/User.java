@@ -10,6 +10,7 @@ public class User {
     private int score;
     public Question lastQuestion;
     public Boolean gameMode;
+    public Boolean isRegionChosen;
     public String region;
     public HashMap<String, Integer> bestScore;
 
@@ -18,6 +19,7 @@ public class User {
         score = 0;
         lastQuestion = new Question();
         gameMode = false;
+        isRegionChosen = false;
         region = "";
         bestScore = new HashMap<>();
         bestScore.put("Европа", 0);
