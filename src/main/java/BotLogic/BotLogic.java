@@ -68,7 +68,7 @@ public class BotLogic {
             case ("/newgame"):{
                 users.get(userId).gameMode = true;
                 return "Выберите регион: \nЕвропа,\nАзия,\nАмерика,\nАфрика,\nАвстралия и Океания";}
-                // тут все вылетает когда неправильно вводишь название региона
+            // тут все вылетает когда неправильно вводишь название региона
             case ("/stat"):
                 return users.get(userId).getStat();
             default:
@@ -83,13 +83,18 @@ public class BotLogic {
             question = questionGenerator.getQuestion(msg);
             return question.getQuestion();
         }
+
         if (msg.equals(question.getAnswer())) {
             question = questionGenerator.getQuestion(users.get(userId).region);
+            if (question == null)
+                return responseToCommand("/stop");
             users.get(userId).addPoints();
             users.get(userId).updateScore();
             return "Правильно!" + "\n" + question.getQuestion();
         } else {
             question = questionGenerator.getQuestion(users.get(userId).region);
+            if (question == null)
+                return responseToCommand("/stop");
             return "Неправильно!" + "\n" + question.getQuestion();
         }
     }
