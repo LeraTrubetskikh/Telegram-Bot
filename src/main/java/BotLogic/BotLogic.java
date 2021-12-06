@@ -9,11 +9,11 @@ import java.util.HashMap;
 
 public class BotLogic {
 
+    public final String[] regions;
     private final HashMap<Long, User> users;
     private Long userId;
     private final QuestionGenerator questionGenerator;
     private Question question;
-    private final String[] regions;
 
     public BotLogic(){
         users = new HashMap<>();
@@ -36,7 +36,12 @@ public class BotLogic {
             text = responseToCommand(text);
         }
         else if(users.get(userId).gameMode){
-            text = responseToMessage(text);
+            if (users.get(userId).isRegionChosen){
+                text = responseToMessage(text);
+            }
+            else{
+                text = responseToRegionChoice(text);
+            }
         }
         else {
             text = "Для начала введите /start";
@@ -60,6 +65,7 @@ public class BotLogic {
             case ("/stop"):
                 if (users.get(userId).gameMode){
                     users.get(userId).gameMode = false;
+                    users.get(userId).isRegionChosen = false;
                     return String.format("Ваш счёт: %d", users.get(userId).getScore());
                 }
                 else {
@@ -68,7 +74,6 @@ public class BotLogic {
             case ("/newgame"):{
                 users.get(userId).gameMode = true;
                 return "Выберите регион: \nЕвропа,\nАзия,\nАмерика,\nАфрика,\nАвстралия и Океания";}
-            // тут все вылетает когда неправильно вводишь название региона
             case ("/stat"):
                 return users.get(userId).getStat();
             default:
@@ -77,14 +82,7 @@ public class BotLogic {
     }
 
     private String responseToMessage(String msg){
-        if (Arrays.asList(regions).contains(msg)){
-            users.get(userId).resetScore();
-            users.get(userId).region = msg;
-            question = questionGenerator.getQuestion(msg);
-            return question.getQuestion();
-        }
-
-        if (msg.equals(question.getAnswer())) {
+        if (msg.equalsIgnoreCase(question.getAnswer())) {
             question = questionGenerator.getQuestion(users.get(userId).region);
             if (question == null)
                 return responseToCommand("/stop");
@@ -96,6 +94,20 @@ public class BotLogic {
             if (question == null)
                 return responseToCommand("/stop");
             return "Неправильно!" + "\n" + question.getQuestion();
+        }
+    }
+
+    private String responseToRegionChoice(String region){
+        String capitalizedRegion = Character.toUpperCase(region.charAt(0)) + region.substring(1).toLowerCase();
+        if (Arrays.asList(regions).contains(capitalizedRegion)){
+            users.get(userId).isRegionChosen = true;
+            users.get(userId).resetScore();
+            users.get(userId).region = capitalizedRegion;
+            question = questionGenerator.getQuestion(capitalizedRegion);
+            return question.getQuestion();
+        }
+        else {
+            return "Нет такого региона!";
         }
     }
 }

@@ -20,11 +20,13 @@ public class TelegramBot extends TelegramLongPollingBot {
     private final String token;
     private final String username;
     private final BotLogic botLogic;
+    private static String[] regions;
 
     public TelegramBot(String token, String username, BotLogic botLogic) {
         this.token = token;
         this.username = username;
         this.botLogic = botLogic;
+        regions = botLogic.regions;
     }
 
     @Override
@@ -103,27 +105,28 @@ public class TelegramBot extends TelegramLongPollingBot {
     }
 
     private static void setInlineKeyBoardToMessage(SendMessage outMessage) {
+
         InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
 
         InlineKeyboardButton inlineKeyboardButton1 = new InlineKeyboardButton();
-        inlineKeyboardButton1.setText("Европа");
-        inlineKeyboardButton1.setCallbackData("Европа");
+        inlineKeyboardButton1.setText(regions[0]);
+        inlineKeyboardButton1.setCallbackData(regions[0]);
 
         InlineKeyboardButton inlineKeyboardButton2 = new InlineKeyboardButton();
-        inlineKeyboardButton2.setText("Азия");
-        inlineKeyboardButton2.setCallbackData("Азия");
+        inlineKeyboardButton2.setText(regions[1]);
+        inlineKeyboardButton2.setCallbackData(regions[1]);
 
         InlineKeyboardButton inlineKeyboardButton3 = new InlineKeyboardButton();
-        inlineKeyboardButton3.setText("Америка");
-        inlineKeyboardButton3.setCallbackData("Америка");
+        inlineKeyboardButton3.setText(regions[2]);
+        inlineKeyboardButton3.setCallbackData(regions[2]);
 
         InlineKeyboardButton inlineKeyboardButton4 = new InlineKeyboardButton();
-        inlineKeyboardButton4.setText("Африка");
-        inlineKeyboardButton4.setCallbackData("Африка");
+        inlineKeyboardButton4.setText(regions[3]);
+        inlineKeyboardButton4.setCallbackData(regions[3]);
 
         InlineKeyboardButton inlineKeyboardButton5 = new InlineKeyboardButton();
-        inlineKeyboardButton5.setText("Австралия и Океания");
-        inlineKeyboardButton5.setCallbackData("Австралия и Океания");
+        inlineKeyboardButton5.setText(regions[4]);
+        inlineKeyboardButton5.setCallbackData(regions[4]);
 
         List<InlineKeyboardButton> keyboardButtonsRow1 = new ArrayList<>();
         List<InlineKeyboardButton> keyboardButtonsRow2 = new ArrayList<>();
