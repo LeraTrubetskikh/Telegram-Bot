@@ -32,9 +32,10 @@ public class QuestionGenerator {
 
     private void setPermutation() {
         permutation = new ArrayList<>();
-        for (int i = 0; i < 15; i++)
+        for (int i = 0; i < questions.get(region).size(); i++)
             permutation.add(i);
         java.util.Collections.shuffle(permutation);
+        permutation.subList(16, permutation.size()).clear();
     }
 
     public Question getQuestion(String region){
@@ -42,8 +43,10 @@ public class QuestionGenerator {
             this.region = region;
             setPermutation();
         }
-        if (permutation.size() == 0)
+        if (permutation.size() == 0) {
+            this.region = "";
             return null;
+        }
         var index = permutation.get(permutation.size() - 1);
         permutation.remove(permutation.size() - 1);
         return questions.get(region).get(index);

@@ -49,11 +49,6 @@ public class User {
         score = 0;
     }
 
-    public void updateScore() {
-        if (bestScore.get(region) < score)
-            bestScore.put(region, score);
-    }
-
     public String getStat() {
         StringBuilder sb = new StringBuilder();
 
@@ -61,5 +56,13 @@ public class User {
             sb.append(String.format("%s: %d\n", key, bestScore.get(key)));
         }
         return sb.toString();
+    }
+
+    public void finishTheGame(){
+        if (bestScore.get(region) < score)
+            bestScore.put(region, score);
+        resetScore();
+        gameMode = false;
+        isRegionChosen = false;
     }
 }

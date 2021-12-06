@@ -26,26 +26,21 @@ public class BotLogic {
         String text = message.getText();
         userId = message.getUserId();
 
-        if (!users.containsKey(userId)) {
+        if (!users.containsKey(userId))
             users.put(userId, new User(userId));
-        } else {
+        else
             question = users.get(userId).lastQuestion;
-        }
 
-        if (!text.isEmpty() && text.charAt(0) == '/') {
+        if (!text.isEmpty() && text.charAt(0) == '/')
             text = responseToCommand(text);
-        }
-        else if(users.get(userId).gameMode){
-            if (users.get(userId).isRegionChosen){
+        else if(users.get(userId).gameMode)
+            if (users.get(userId).isRegionChosen)
                 text = responseToMessage(text);
-            }
-            else{
+            else
                 text = responseToRegionChoice(text);
-            }
-        }
-        else {
+        else
             text = "Для начала введите /start";
-        }
+
         users.get(userId).setQuestion(question);
         BotMessage newMessage = new BotMessage(text, message.getUserId());
         newMessage.setGameMode(users.get(userId).gameMode);
@@ -56,7 +51,7 @@ public class BotLogic {
         switch (text) {
             case ("/start"):
                 return "Привет! Я бот для изучения столиц стран мира.\n" +
-                        "Чтобы посмотреть список моих комманд, введите /help";
+                        "Чтобы посмотреть список моих команд, введите /help";
             case ("/help"):
                 return "/start - информация о боте,\n" +
                         "/newgame - начать новую игру,\n" +
@@ -84,15 +79,20 @@ public class BotLogic {
     private String responseToMessage(String msg){
         if (msg.equalsIgnoreCase(question.getAnswer())) {
             question = questionGenerator.getQuestion(users.get(userId).region);
-            if (question == null)
-                return responseToCommand("/stop");
             users.get(userId).addPoints();
-            users.get(userId).updateScore();
+            if (question == null) {
+                var score = users.get(userId).getScore();
+                users.get(userId).finishTheGame();
+                return String.format("Правильно!\nВаш счёт: %d", score);
+            }
             return "Правильно!" + "\n" + question.getQuestion();
         } else {
             question = questionGenerator.getQuestion(users.get(userId).region);
-            if (question == null)
-                return responseToCommand("/stop");
+            if (question == null) {
+                var score = users.get(userId).getScore();
+                users.get(userId).finishTheGame();
+                return String.format("Неправильно!\nВаш счёт: %d", score);
+            }
             return "Неправильно!" + "\n" + question.getQuestion();
         }
     }
@@ -101,7 +101,6 @@ public class BotLogic {
         String capitalizedRegion = Character.toUpperCase(region.charAt(0)) + region.substring(1).toLowerCase();
         if (Arrays.asList(regions).contains(capitalizedRegion)){
             users.get(userId).isRegionChosen = true;
-            users.get(userId).resetScore();
             users.get(userId).region = capitalizedRegion;
             question = questionGenerator.getQuestion(capitalizedRegion);
             return question.getQuestion();
