@@ -34,7 +34,7 @@ public class TelegramBot extends TelegramLongPollingBot {
         if (update.hasMessage() && update.getMessage().hasText()) {
             try {
                 Message inMessage = update.getMessage();
-                BotMessage newMessage = botLogic.handler(new BotMessage(inMessage.getText(), inMessage.getChatId()));
+                BotMessage newMessage = botLogic.getNewMessage(new BotMessage(inMessage.getText(), inMessage.getChatId()));
                 SendMessage outMessage = new SendMessage();
 
                 if (newMessage.getText().length() > 14 &&
@@ -54,11 +54,12 @@ public class TelegramBot extends TelegramLongPollingBot {
             try {
                 BotMessage botMessage = new BotMessage(update.getCallbackQuery().getData(),
                         update.getCallbackQuery().getMessage().getChatId());
-                BotMessage newMessage = botLogic.handler(botMessage);
+                BotMessage newMessage = botLogic.getNewMessage(botMessage);
 
                 SendMessage outMessage = new SendMessage();
                 outMessage.setText(newMessage.getText());
                 outMessage.setChatId(newMessage.getUserId());
+                setReplyKeyBoardToMessage(outMessage, newMessage.getGameMode());
                 execute(outMessage);
             } catch (TelegramApiException e) {
                 e.printStackTrace();
@@ -105,47 +106,26 @@ public class TelegramBot extends TelegramLongPollingBot {
     }
 
     private static void setInlineKeyBoardToMessage(SendMessage outMessage) {
-
         InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
-
-        InlineKeyboardButton inlineKeyboardButton1 = new InlineKeyboardButton();
-        inlineKeyboardButton1.setText(regions[0]);
-        inlineKeyboardButton1.setCallbackData(regions[0]);
-
-        InlineKeyboardButton inlineKeyboardButton2 = new InlineKeyboardButton();
-        inlineKeyboardButton2.setText(regions[1]);
-        inlineKeyboardButton2.setCallbackData(regions[1]);
-
-        InlineKeyboardButton inlineKeyboardButton3 = new InlineKeyboardButton();
-        inlineKeyboardButton3.setText(regions[2]);
-        inlineKeyboardButton3.setCallbackData(regions[2]);
-
-        InlineKeyboardButton inlineKeyboardButton4 = new InlineKeyboardButton();
-        inlineKeyboardButton4.setText(regions[3]);
-        inlineKeyboardButton4.setCallbackData(regions[3]);
-
-        InlineKeyboardButton inlineKeyboardButton5 = new InlineKeyboardButton();
-        inlineKeyboardButton5.setText(regions[4]);
-        inlineKeyboardButton5.setCallbackData(regions[4]);
-
-        List<InlineKeyboardButton> keyboardButtonsRow1 = new ArrayList<>();
-        List<InlineKeyboardButton> keyboardButtonsRow2 = new ArrayList<>();
-        List<InlineKeyboardButton> keyboardButtonsRow3 = new ArrayList<>();
-
-        keyboardButtonsRow1.add(inlineKeyboardButton1);
-        keyboardButtonsRow1.add(inlineKeyboardButton2);
-
-        keyboardButtonsRow2.add(inlineKeyboardButton3);
-        keyboardButtonsRow2.add(inlineKeyboardButton4);
-
-        keyboardButtonsRow3.add(inlineKeyboardButton5);
-
         List<List<InlineKeyboardButton>> rowList = new ArrayList<>();
-        rowList.add(keyboardButtonsRow1);
-        rowList.add(keyboardButtonsRow2);
-        rowList.add(keyboardButtonsRow3);
-        inlineKeyboardMarkup.setKeyboard(rowList);
 
+        for (var i = 0; i < 5;) {
+            List<InlineKeyboardButton> keyboardButtonsRow = new ArrayList<>();
+
+            var to = 2;
+            if (i > 3)
+                to = 1;
+
+            for (var j = 0; j < to; j++) {
+                InlineKeyboardButton inlineKeyboardButton = new InlineKeyboardButton();
+                inlineKeyboardButton.setText(regions[i]);
+                inlineKeyboardButton.setCallbackData(regions[i]);
+                keyboardButtonsRow.add(inlineKeyboardButton);
+                i++;
+            }
+            rowList.add(keyboardButtonsRow);
+        }
+        inlineKeyboardMarkup.setKeyboard(rowList);
         outMessage.setReplyMarkup(inlineKeyboardMarkup);
     }
 }

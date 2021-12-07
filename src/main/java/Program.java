@@ -8,8 +8,7 @@ public class Program {
         ApiContextInitializer.init();
         TelegramBotsApi botsApi = new TelegramBotsApi();
         String token = ""; //для запуска бота вставить токен
-        TelegramBot bot = new TelegramBot(token,
-                "@matmex_geographer_bot", new BotLogic());
+        TelegramBot bot = new TelegramBot(token, "@matmex_geographer_bot", new BotLogic());
         botsApi.registerBot(bot);
 
 //        ConsoleBot bot = new ConsoleBot(new BotLogic()); // для работы с консолью

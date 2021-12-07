@@ -2,8 +2,8 @@ package Questions;
 
 public class Question {
     public String country;
-    private String countryGenitive;
     public String capital;
+    private String countryGenitive;
 
     public String getQuestion(){
         return String.format("Столица %s?", countryGenitive);
