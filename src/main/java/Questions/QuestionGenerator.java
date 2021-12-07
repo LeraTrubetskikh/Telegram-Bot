@@ -30,14 +30,6 @@ public class QuestionGenerator {
         }
     }
 
-    private void setPermutation() {
-        permutation = new ArrayList<>();
-        for (int i = 0; i < questions.get(region).size(); i++)
-            permutation.add(i);
-        java.util.Collections.shuffle(permutation);
-        permutation.subList(16, permutation.size()).clear();
-    }
-
     public Question getQuestion(String region){
         if (!region.equals(this.region)) {
             this.region = region;
@@ -50,5 +42,13 @@ public class QuestionGenerator {
         var index = permutation.get(permutation.size() - 1);
         permutation.remove(permutation.size() - 1);
         return questions.get(region).get(index);
+    }
+
+    private void setPermutation() {
+        permutation = new ArrayList<>();
+        for (int i = 0; i < questions.get(region).size(); i++)
+            permutation.add(i);
+        java.util.Collections.shuffle(permutation);
+        permutation.subList(15, permutation.size()).clear();
     }
 }

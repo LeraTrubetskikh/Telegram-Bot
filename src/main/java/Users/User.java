@@ -1,35 +1,35 @@
 package Users;
 
+import BotLogic.BotLogic;
 import Questions.Question;
 
 import java.util.HashMap;
 
 public class User {
 
-    private final Long id;
-    private int score;
     public Question lastQuestion;
     public Boolean gameMode;
     public Boolean isRegionChosen;
     public String region;
     public HashMap<String, Integer> bestScore;
+    private final Long id;
+    private int score;
+    private final String[] regions;
 
     public User(Long id) {
+        BotLogic botLogic = new BotLogic();
         this.id = id;
+        this.regions = botLogic.regions;
         score = 0;
         lastQuestion = new Question();
         gameMode = false;
         isRegionChosen = false;
         region = "";
         bestScore = new HashMap<>();
-        bestScore.put("Европа", 0);
-        bestScore.put("Азия", 0);
-        bestScore.put("Америка", 0);
-        bestScore.put("Африка", 0);
-        bestScore.put("Австралия и Океания", 0);
+        initializeBestScoreHashMap();
     }
 
-    public Long getID() { // ничгде не используется но пусть будет?
+    public Long getID() { // нигде не используется но пусть будет?
         return id;
     }
 
@@ -64,5 +64,11 @@ public class User {
         resetScore();
         gameMode = false;
         isRegionChosen = false;
+    }
+
+    private void initializeBestScoreHashMap(){
+        for (String s : regions) {
+            bestScore.put(s, 0);
+        }
     }
 }

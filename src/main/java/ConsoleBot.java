@@ -14,11 +14,11 @@ public class ConsoleBot {
 
     public void start() {
         System.out.println("Для начала введите /start");
-        BotMessage message = new BotMessage("", 0L);
+        BotMessage inMessage = new BotMessage("", 0L);
         while(true){
-            message.setText(scanner.nextLine());
-            message = botLogic.handler(message);
-            System.out.println(message.getText());
+            inMessage.setText(scanner.nextLine());
+            BotMessage outMessage = botLogic.getNewMessage(inMessage);
+            System.out.println(outMessage.getText());
         }
     }
 }

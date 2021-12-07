@@ -22,7 +22,7 @@ public class BotLogic {
         regions = new String[]{"Европа", "Азия", "Америка", "Африка", "Австралия и Океания"};
     }
 
-    public BotMessage handler(BotMessage message){
+    public BotMessage getNewMessage(BotMessage message){
         String text = message.getText();
         userId = message.getUserId();
 
