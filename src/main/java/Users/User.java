@@ -1,6 +1,7 @@
 package Users;
 
 import BotLogic.BotLogic;
+import BotLogic.RegionStore;
 import Questions.Question;
 
 import java.util.HashMap;
@@ -14,12 +15,11 @@ public class User {
     public HashMap<String, Integer> bestScore;
     private final Long id;
     private int score;
-    private final String[] regions;
+    private final RegionStore regionStore;
 
     public User(Long id) {
-        BotLogic botLogic = new BotLogic();
         this.id = id;
-        this.regions = botLogic.regions;
+        regionStore = new RegionStore();
         score = 0;
         lastQuestion = new Question();
         gameMode = false;
@@ -67,7 +67,7 @@ public class User {
     }
 
     private void initializeBestScoreHashMap(){
-        for (String s : regions) {
+        for (String s : regionStore.regions) {
             bestScore.put(s, 0);
         }
     }

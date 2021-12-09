@@ -1,5 +1,6 @@
 import BotLogic.BotLogic;
 import BotLogic.BotMessage;
+import BotLogic.RegionStore;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
@@ -20,13 +21,13 @@ public class TelegramBot extends TelegramLongPollingBot {
     private final String token;
     private final String username;
     private final BotLogic botLogic;
-    private static String[] regions;
+    private static RegionStore regionStore;
 
     public TelegramBot(String token, String username, BotLogic botLogic) {
         this.token = token;
         this.username = username;
         this.botLogic = botLogic;
-        regions = botLogic.regions;
+        regionStore = new RegionStore();
     }
 
     @Override
@@ -118,8 +119,8 @@ public class TelegramBot extends TelegramLongPollingBot {
 
             for (var j = 0; j < to; j++) {
                 InlineKeyboardButton inlineKeyboardButton = new InlineKeyboardButton();
-                inlineKeyboardButton.setText(regions[i]);
-                inlineKeyboardButton.setCallbackData(regions[i]);
+                inlineKeyboardButton.setText(regionStore.regions[i]);
+                inlineKeyboardButton.setCallbackData(regionStore.regions[i]);
                 keyboardButtonsRow.add(inlineKeyboardButton);
                 i++;
             }

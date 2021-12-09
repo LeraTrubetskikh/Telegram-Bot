@@ -9,7 +9,7 @@ import java.util.HashMap;
 
 public class BotLogic {
 
-    public final String[] regions;
+    public final RegionStore regionStore;
     private final HashMap<Long, User> users;
     private Long userId;
     private final QuestionGenerator questionGenerator;
@@ -19,7 +19,7 @@ public class BotLogic {
         users = new HashMap<>();
         questionGenerator = new QuestionGenerator();
         question = new Question();
-        regions = new String[]{"Европа", "Азия", "Америка", "Африка", "Австралия и Океания"};
+        regionStore = new RegionStore();
     }
 
     public BotMessage getNewMessage(BotMessage message){
@@ -99,7 +99,7 @@ public class BotLogic {
 
     private String responseToRegionChoice(String region){
         String capitalizedRegion = Character.toUpperCase(region.charAt(0)) + region.substring(1).toLowerCase();
-        if (Arrays.asList(regions).contains(capitalizedRegion)){
+        if (Arrays.asList(regionStore.regions).contains(capitalizedRegion)){
             users.get(userId).isRegionChosen = true;
             users.get(userId).region = capitalizedRegion;
             question = questionGenerator.getQuestion(capitalizedRegion);
