@@ -1,14 +1,15 @@
 package Users;
 
-import BotLogic.BotLogic;
 import BotLogic.RegionStore;
 import Questions.Question;
+import Questions.TaskGenerator;
 
 import java.util.HashMap;
 
 public class User {
 
     public Question lastQuestion;
+    public TaskGenerator taskGenerator;
     public Boolean gameMode;
     public Boolean isRegionChosen;
     public String region;
@@ -22,6 +23,7 @@ public class User {
         regionStore = new RegionStore();
         score = 0;
         lastQuestion = new Question();
+        taskGenerator = new TaskGenerator();
         gameMode = false;
         isRegionChosen = false;
         region = "";
