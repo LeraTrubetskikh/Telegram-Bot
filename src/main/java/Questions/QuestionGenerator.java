@@ -1,41 +1,54 @@
 package Questions;
 
+import com.google.common.reflect.TypeToken;
+import com.google.gson.Gson;
+
 import java.io.FileReader;
-import java.io.IOException;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.Scanner;
+import java.util.HashMap;
+import java.util.List;
 
 public class QuestionGenerator {
+    private Gson gson;
+    private HashMap<String, List<Question>> questions;
+    private ArrayList<Integer> permutation;
+    private String region;
 
-    private final ArrayList<Question> questions;
 
     public QuestionGenerator() {
-        questions = new ArrayList<>();
-        getQuestions();
-    }
-
-    private int getRandomNumber(int to) {
-        return (int)(Math.random() * to);
-    }
-
-    public Question getQuestion(){
-        return questions.get(getRandomNumber(questions.size() - 1));
-    }
-
-    private void getQuestions() {
-        try {
-            FileReader fr = new FileReader("src/main/resources/questions.txt");
-            Scanner scan = new Scanner(fr);
-
-            String[] s;
-            while(scan.hasNextLine()){
-                s = scan.nextLine().split(":");
-                questions.add(new Question(s[0], s[1]));
-            }
-            fr.close();
+        gson = new Gson();
+        questions = new HashMap<>();
+        permutation = new ArrayList<>();
+        region = "";
+        try (FileReader reader = new FileReader("src/main/resources/q.json")) {
+            Type type = new TypeToken<HashMap<String, List<Question>>>(){}.getType();
+            questions = gson.fromJson(reader, type);
         }
-        catch(IOException ex){
-            System.out.println(ex.getMessage());
+        catch (Exception e) {
+            System.out.println(e);
         }
+    }
+
+    public Question getQuestion(String region){
+        if (!region.equals(this.region)) {
+            this.region = region;
+            setPermutation();
+        }
+        if (permutation.size() == 0) {
+            this.region = "";
+            return null;
+        }
+        var index = permutation.get(permutation.size() - 1);
+        permutation.remove(permutation.size() - 1);
+        return questions.get(region).get(index);
+    }
+
+    private void setPermutation() {
+        permutation = new ArrayList<>();
+        for (int i = 0; i < questions.get(region).size(); i++)
+            permutation.add(i);
+        java.util.Collections.shuffle(permutation);
+        permutation.subList(15, permutation.size()).clear();
     }
 }
