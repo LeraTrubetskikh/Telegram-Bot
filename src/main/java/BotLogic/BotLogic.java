@@ -54,7 +54,6 @@ public class BotLogic {
                     users.get(userId).isNameTheCapitalGame = false;
                     users.get(userId).isGuessTheCountryGame = false;
                     var score = users.get(userId).getScore();
-                    users.get(userId).taskGenerator.region = "";
                     users.get(userId).resetScore();
                     return String.format("Ваш счёт: %d", score);
                 }
@@ -77,7 +76,7 @@ public class BotLogic {
             if (user.isRegionChosen) {
                 return nameTheCapitalGame.responseToMessage(user, msg);
             } else {
-                return nameTheCapitalGame.responseToRegionChoice(user, msg);
+                return nameTheCapitalGame.startNewGame(user, msg);
             }
         }
         else if (user.isGuessTheCountryGame) {
@@ -90,9 +89,7 @@ public class BotLogic {
                     return "Выберите регион: \nЕвропа\nАзия\nАмерика\nАфрика\nАвстралия и Океания";
                 case ("угадай страну"):
                     user.isGuessTheCountryGame = true;
-                    var task = user.taskGenerator.getDescription();
-                    user.setTask(task);
-                    return task.getTask();
+                    return guessTheCountryGame.startNewGame(user);
                 default:
                     return "Такой игры нет :(";
             }
