@@ -49,13 +49,8 @@ public class BotLogic {
                         "/stat - статистика по всем регионам";
             case ("/stop"):
                 if (users.get(userId).gameMode){
-                    users.get(userId).gameMode = false;
-                    users.get(userId).isRegionChosen = false;
-                    users.get(userId).isNameTheCapitalGame = false;
-                    users.get(userId).isGuessTheCountryGame = false;
-                    var score = users.get(userId).getScore();
-                    users.get(userId).resetScore();
-                    return String.format("Ваш счёт: %d", score);
+                    users.get(userId).finishTheGame();
+                    return String.format("Ваш счёт: %d", users.get(userId).resetScore());
                 }
                 else {
                     return "Для начала введите /start";

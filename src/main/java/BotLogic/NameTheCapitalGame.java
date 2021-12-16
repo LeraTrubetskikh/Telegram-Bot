@@ -26,18 +26,16 @@ public class NameTheCapitalGame {
             user.setTask(task);
             user.addPoints();
             if (task == null) {
-                var score = user.getScore();
                 user.finishTheGame();
-                return String.format("Правильно!\nВаш счёт: %d/10", score);
+                return String.format("Правильно!\nВаш счёт: %d/10", user.resetScore());
             }
             return "Правильно!" + "\n" + task.getTask();
         } else {
             task = taskGenerator.getQuestion(user.getID());
             user.setTask(task);
             if (task == null) {
-                var score = user.getScore();
                 user.finishTheGame();
-                return String.format("Неправильно!\nВаш счёт: %d/10", score);
+                return String.format("Неправильно!\nВаш счёт: %d/10", user.resetScore());
             }
             return "Неправильно!" + "\n" + task.getTask();
         }
@@ -47,7 +45,7 @@ public class NameTheCapitalGame {
         String capitalizedRegion = Character.toUpperCase(region.charAt(0)) + region.substring(1).toLowerCase();
         if (Arrays.asList(regionStore.regions).contains(capitalizedRegion)){
             user.isRegionChosen = true;
-            user.region = capitalizedRegion;
+            user.setScoreRegion(capitalizedRegion);
             taskGenerator.setQuestions(user.getID(), capitalizedRegion);
             task = taskGenerator.getQuestion(user.getID());
             user.setTask(task);

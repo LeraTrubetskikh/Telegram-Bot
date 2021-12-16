@@ -18,7 +18,7 @@ public class GuessTheCountryGame{
     public String startNewGame(User user){
         taskGenerator.setDescriptions(user.getID());
         task = taskGenerator.getDescription(user.getID());
-        user.region = "Описание страны";
+        user.setScoreRegion("");
         user.setTask(task);
         return task.getTask();
     }
@@ -30,18 +30,16 @@ public class GuessTheCountryGame{
             user.setTask(task);
             user.addPoints();
             if (task == null) {
-                var score = user.getScore();
                 user.finishTheGame();
-                return String.format("Правильно!\nТы угадал %d из 10 стран!", score);
+                return String.format("Правильно!\nТы угадал %d из 10 стран!", user.resetScore());
             }
             return "Правильно!" + "\n" + task.getTask();
         } else {
             task = taskGenerator.getDescription(user.getID());
             user.setTask(task);
             if (task == null) {
-                var score = user.getScore();
                 user.finishTheGame();
-                return String.format("Неправильно!\nТы угадал %d из 10 стран!", score);
+                return String.format("Неправильно!\nТы угадал %d из 10 стран!", user.resetScore());
             }
             return "Неправильно!" + "\n" + task.getTask();
         }
