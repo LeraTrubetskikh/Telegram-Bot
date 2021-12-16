@@ -36,17 +36,7 @@ public class TelegramBot extends TelegramLongPollingBot {
             try {
                 Message inMessage = update.getMessage();
                 BotMessage newMessage = botLogic.getNewMessage(new BotMessage(inMessage.getText(), inMessage.getChatId()));
-                SendMessage outMessage = new SendMessage();
-
-                if (newMessage.getText().length() > 14 &&
-                        Objects.equals(newMessage.getText().substring(0, 15), "Выберите регион")) {
-                    outMessage.setText("Выберите регион:");
-                    setInlineKeyBoardToMessage(outMessage);
-                } else {
-                    outMessage.setText(newMessage.getText());
-                    setReplyKeyBoardToMessage(outMessage, newMessage.getGameMode());
-                }
-                outMessage.setChatId(newMessage.getUserId());
+                SendMessage outMessage = getTelegramOutMessage(newMessage);
                 execute(outMessage);
             } catch (TelegramApiException e) {
                 e.printStackTrace();
@@ -56,11 +46,7 @@ public class TelegramBot extends TelegramLongPollingBot {
                 BotMessage botMessage = new BotMessage(update.getCallbackQuery().getData(),
                         update.getCallbackQuery().getMessage().getChatId());
                 BotMessage newMessage = botLogic.getNewMessage(botMessage);
-
-                SendMessage outMessage = new SendMessage();
-                outMessage.setText(newMessage.getText());
-                outMessage.setChatId(newMessage.getUserId());
-                setReplyKeyBoardToMessage(outMessage, newMessage.getGameMode());
+                SendMessage outMessage = getTelegramOutMessage(newMessage);
                 execute(outMessage);
             } catch (TelegramApiException e) {
                 e.printStackTrace();
@@ -76,6 +62,21 @@ public class TelegramBot extends TelegramLongPollingBot {
     @Override
     public String getBotUsername() {
         return username;
+    }
+
+    private SendMessage getTelegramOutMessage(BotMessage newMessage){
+        SendMessage outMessage = new SendMessage();
+
+        if (newMessage.getText().length() > 14 &&
+                Objects.equals(newMessage.getText().substring(0, 15), "Выберите регион")) {
+            outMessage.setText("Выберите регион:");
+            setInlineKeyBoardToMessage(outMessage);
+        } else {
+            outMessage.setText(newMessage.getText());
+            setReplyKeyBoardToMessage(outMessage, newMessage.getGameMode());
+        }
+        outMessage.setChatId(newMessage.getUserId());
+        return outMessage;
     }
 
     private static void setReplyKeyBoardToMessage(SendMessage outMessage, Boolean gameMode) {

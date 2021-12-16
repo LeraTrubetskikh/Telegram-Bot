@@ -1,22 +1,21 @@
 package BotLogic;
 
-import Questions.Question;
 import Users.User;
-
-import java.util.Arrays;
 import java.util.HashMap;
 
 public class BotLogic {
 
     public final RegionStore regionStore;
     private final HashMap<Long, User> users;
+    private final NameTheCapitalGame nameTheCapitalGame;
+    private final GuessTheCountryGame guessTheCountryGame;
     private Long userId;
-    private Question task;
 
     public BotLogic(){
         users = new HashMap<>();
-        task = new Question();
         regionStore = new RegionStore();
+        nameTheCapitalGame = new NameTheCapitalGame();
+        guessTheCountryGame = new GuessTheCountryGame();
     }
 
     public BotMessage getNewMessage(BotMessage message){
@@ -25,20 +24,14 @@ public class BotLogic {
 
         if (!users.containsKey(userId))
             users.put(userId, new User(userId));
-        else
-            task = users.get(userId).lastQuestion;
 
         if (!text.isEmpty() && text.charAt(0) == '/')
             text = responseToCommand(text);
         else if(users.get(userId).gameMode)
-            if (users.get(userId).isRegionChosen)
-                text = responseToMessage(text);
-            else
-                text = responseToRegionChoice(text);
+            text = responseToMessageInGameMode(text);
         else
             text = "Для начала введите /start";
 
-        users.get(userId).setQuestion(task);
         BotMessage newMessage = new BotMessage(text, message.getUserId());
         newMessage.setGameMode(users.get(userId).gameMode);
         return newMessage;
@@ -47,7 +40,7 @@ public class BotLogic {
     private String responseToCommand(String text) {
         switch (text) {
             case ("/start"):
-                return "Привет! Я бот для изучения столиц стран мира.\n" +
+                return "Привет! Я бот-географ.\n" +
                         "Чтобы посмотреть список моих команд, введите /help";
             case ("/help"):
                 return "/start - информация о боте,\n" +
@@ -58,6 +51,8 @@ public class BotLogic {
                 if (users.get(userId).gameMode){
                     users.get(userId).gameMode = false;
                     users.get(userId).isRegionChosen = false;
+                    users.get(userId).isNameTheCapitalGame = false;
+                    users.get(userId).isGuessTheCountryGame = false;
                     var score = users.get(userId).getScore();
                     users.get(userId).taskGenerator.region = "";
                     users.get(userId).resetScore();
@@ -66,9 +61,9 @@ public class BotLogic {
                 else {
                     return "Для начала введите /start";
                 }
-            case ("/newgame"):{
+            case ("/newgame"):
                 users.get(userId).gameMode = true;
-                return "Выберите регион: \nЕвропа,\nАзия,\nАмерика,\nАфрика,\nАвстралия и Океания";}
+                return "Выберите игру: \nНазови столицу\nУгадай страну";
             case ("/stat"):
                 return users.get(userId).getStat();
             default:
@@ -76,37 +71,31 @@ public class BotLogic {
         }
     }
 
-    private String responseToMessage(String msg){
-        if (msg.equalsIgnoreCase(task.getAnswer())) {
-            task = users.get(userId).taskGenerator.getQuestion(users.get(userId).region);
-            users.get(userId).addPoints();
-            if (task == null) {
-                var score = users.get(userId).getScore();
-                users.get(userId).finishTheGame();
-                return String.format("Правильно!\nВаш счёт: %d", score);
+    private String responseToMessageInGameMode(String msg) {
+        User user = users.get(userId);
+        if (user.isNameTheCapitalGame) {
+            if (user.isRegionChosen) {
+                return nameTheCapitalGame.responseToMessage(user, msg);
+            } else {
+                return nameTheCapitalGame.responseToRegionChoice(user, msg);
             }
-            return "Правильно!" + "\n" + task.getTask();
-        } else {
-            task = users.get(userId).taskGenerator.getQuestion(users.get(userId).region);
-            if (task == null) {
-                var score = users.get(userId).getScore();
-                users.get(userId).finishTheGame();
-                return String.format("Неправильно!\nВаш счёт: %d", score);
-            }
-            return "Неправильно!" + "\n" + task.getTask();
         }
-    }
-
-    private String responseToRegionChoice(String region){
-        String capitalizedRegion = Character.toUpperCase(region.charAt(0)) + region.substring(1).toLowerCase();
-        if (Arrays.asList(regionStore.regions).contains(capitalizedRegion)){
-            users.get(userId).isRegionChosen = true;
-            users.get(userId).region = capitalizedRegion;
-            task = users.get(userId).taskGenerator.getQuestion(capitalizedRegion);
-            return task.getTask();
+        else if (user.isGuessTheCountryGame) {
+            return guessTheCountryGame.responseToMessage(user, msg);
         }
         else {
-            return "Нет такого региона!";
+            switch (msg.toLowerCase()) {
+                case ("назови столицу"):
+                    user.isNameTheCapitalGame = true;
+                    return "Выберите регион: \nЕвропа\nАзия\nАмерика\nАфрика\nАвстралия и Океания";
+                case ("угадай страну"):
+                    user.isGuessTheCountryGame = true;
+                    var task = user.taskGenerator.getDescription();
+                    user.setTask(task);
+                    return task.getTask();
+                default:
+                    return "Такой игры нет :(";
+            }
         }
     }
 }

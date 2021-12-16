@@ -7,7 +7,7 @@ public class Program {
     public static void main(String[] args) throws TelegramApiRequestException {
         ApiContextInitializer.init();
         TelegramBotsApi botsApi = new TelegramBotsApi();
-        String token = "2090752243:AAH01lUcuDQpjRppT5PoB8zH2oMXNBg2ssg"; //для запуска бота вставить токен
+        String token = ""; //для запуска бота вставить токен
         TelegramBot bot = new TelegramBot(token, "@matmex_geographer_bot", new BotLogic());
         botsApi.registerBot(bot);
 

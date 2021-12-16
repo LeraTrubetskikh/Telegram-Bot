@@ -1,8 +1,7 @@
-package Questions;
+package Tasks;
 
 import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
-
 import java.io.FileReader;
 import java.lang.reflect.Type;
 import java.util.HashMap;
@@ -24,7 +23,7 @@ public class TaskStore {
         }
 
         try (FileReader reader = new FileReader("src/main/resources/descriptions.json")) {
-            Type type = new TypeToken<List<Question>>(){}.getType();
+            Type type = new TypeToken<List<Description>>(){}.getType();
             descriptions = gson.fromJson(reader, type);
         }
         catch (Exception e) {

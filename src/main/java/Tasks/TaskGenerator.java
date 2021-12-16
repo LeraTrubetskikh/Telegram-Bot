@@ -1,31 +1,23 @@
-package Questions;
+package Tasks;
 
-import com.google.common.reflect.TypeToken;
-import com.google.gson.Gson;
-
-import java.io.FileReader;
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 public class TaskGenerator {
 
-    private static TaskStore taskStore;
-    private Gson gson;
-    private HashMap<String, List<Question>> questions;
-    private List<Description> descriptions;
-    private Boolean description;
+    private final HashMap<String, List<Question>> questions;
+    private final List<Description> descriptions;
+    private Boolean isDescription;
     private ArrayList<Integer> permutation;
     public String region;
 
     public TaskGenerator() {
-        taskStore = new TaskStore();
+        TaskStore taskStore = new TaskStore();
         questions = taskStore.questions;
         descriptions = taskStore.descriptions;
         permutation = new ArrayList<>();
-        gson = new Gson();
-        description = false;
+        isDescription = false;
         region = "";
     }
 
@@ -43,9 +35,11 @@ public class TaskGenerator {
         return questions.get(region).get(index);
     }
 
-    public Description getQuestion(){
+    public Description getDescription(){
+        isDescription = true;
+        setPermutation();
         if (permutation.size() == 0) {
-            description = false;
+            isDescription = false;
             return null;
         }
         var index = permutation.get(permutation.size() - 1);
@@ -57,7 +51,7 @@ public class TaskGenerator {
         permutation = new ArrayList<>();
 
         var to = 0;
-        if (description)
+        if (isDescription)
             to = descriptions.size();
         else
             to = questions.get(region).size();
@@ -65,6 +59,6 @@ public class TaskGenerator {
         for (int i = 0; i < to; i++)
             permutation.add(i);
         java.util.Collections.shuffle(permutation);
-        permutation.subList(15, permutation.size()).clear();
+        permutation.subList(10, permutation.size()).clear();
     }
 }
