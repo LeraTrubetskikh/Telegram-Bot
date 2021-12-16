@@ -1,4 +1,4 @@
-package Questions;
+package Tasks;
 
 public interface IGameTask {
 

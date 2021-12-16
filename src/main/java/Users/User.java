@@ -1,17 +1,19 @@
 package Users;
 
 import BotLogic.RegionStore;
-import Questions.Question;
-import Questions.TaskGenerator;
+import Tasks.IGameTask;
+import Tasks.TaskGenerator;
 
 import java.util.HashMap;
 
 public class User {
 
-    public Question lastQuestion;
+    public IGameTask lastTask;
     public TaskGenerator taskGenerator;
     public Boolean gameMode;
     public Boolean isRegionChosen;
+    public Boolean isNameTheCapitalGame;
+    public Boolean isGuessTheCountryGame;
     public String region;
     public HashMap<String, Integer> bestScore;
     private final Long id;
@@ -22,8 +24,9 @@ public class User {
         this.id = id;
         regionStore = new RegionStore();
         score = 0;
-        lastQuestion = new Question();
         taskGenerator = new TaskGenerator();
+        isNameTheCapitalGame = false;
+        isGuessTheCountryGame = false;
         gameMode = false;
         isRegionChosen = false;
         region = "";
@@ -39,8 +42,8 @@ public class User {
         return score;
     }
 
-    public void setQuestion(Question question) {
-        lastQuestion = question;
+    public void setTask(IGameTask task) {
+        lastTask = task;
     }
 
     public void addPoints() { // названия?
@@ -66,6 +69,8 @@ public class User {
         resetScore();
         gameMode = false;
         isRegionChosen = false;
+        isNameTheCapitalGame = false;
+        isGuessTheCountryGame = false;
     }
 
     private void initializeBestScoreHashMap(){
