@@ -19,7 +19,7 @@ public class NameTheCapitalGame {
         regionStore = new RegionStore();
     }
 
-    public String responseToMessage(User user, String msg){
+    public BotMessage responseToMessage(User user, String msg){
         task = user.lastTask;
         if (msg.equalsIgnoreCase(task.getAnswer())) {
             task = taskGenerator.getQuestion(user.getID());
@@ -27,21 +27,29 @@ public class NameTheCapitalGame {
             user.addPoints();
             if (task == null) {
                 user.finishTheGame();
-                return String.format("Правильно!\nВаш счёт: %d/10", user.resetScore());
+                return new BotMessage("Правильно!",
+                        String.format("Ваш счёт: %d/10", user.resetScore()),
+                        user.getID());
             }
-            return "Правильно!" + "\n" + task.getTask();
+            return new BotMessage("Правильно!", task.getTask(), user.getID());
         } else {
+            var lastTask = task;
             task = taskGenerator.getQuestion(user.getID());
             user.setTask(task);
             if (task == null) {
                 user.finishTheGame();
-                return String.format("Неправильно!\nВаш счёт: %d/10", user.resetScore());
+                return new BotMessage(
+                        String.format("Неправильно! Правильный ответ: %s", lastTask.getAnswer()),
+                        String.format("Ваш счёт: %d/10", user.resetScore()),
+                        user.getID());
             }
-            return "Неправильно!" + "\n" + task.getTask();
+            return new BotMessage(
+                    String.format("Неправильно! Правильный ответ: %s", lastTask.getAnswer()),
+                    task.getTask(), user.getID());
         }
     }
 
-    public String startNewGame(User user, String region){
+    public BotMessage startNewGame(User user, String region){
         String capitalizedRegion = Character.toUpperCase(region.charAt(0)) + region.substring(1).toLowerCase();
         if (Arrays.asList(regionStore.regions).contains(capitalizedRegion)){
             user.isRegionChosen = true;
@@ -49,10 +57,10 @@ public class NameTheCapitalGame {
             taskGenerator.setQuestions(user.getID(), capitalizedRegion);
             task = taskGenerator.getQuestion(user.getID());
             user.setTask(task);
-            return task.getTask();
+            return new BotMessage(task.getTask(), user.getID());
         }
         else {
-            return "Нет такого региона!";
+            return new BotMessage("Нет такого региона!", user.getID());
         }
     }
 }

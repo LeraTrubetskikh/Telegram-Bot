@@ -36,8 +36,7 @@ public class TelegramBot extends TelegramLongPollingBot {
             try {
                 Message inMessage = update.getMessage();
                 BotMessage newMessage = botLogic.getNewMessage(new BotMessage(inMessage.getText(), inMessage.getChatId()));
-                SendMessage outMessage = getTelegramOutMessage(newMessage);
-                execute(outMessage);
+                getTelegramOutMessage(newMessage);
             } catch (TelegramApiException e) {
                 e.printStackTrace();
             }
@@ -46,8 +45,7 @@ public class TelegramBot extends TelegramLongPollingBot {
                 BotMessage botMessage = new BotMessage(update.getCallbackQuery().getData(),
                         update.getCallbackQuery().getMessage().getChatId());
                 BotMessage newMessage = botLogic.getNewMessage(botMessage);
-                SendMessage outMessage = getTelegramOutMessage(newMessage);
-                execute(outMessage);
+                getTelegramOutMessage(newMessage);
             } catch (TelegramApiException e) {
                 e.printStackTrace();
             }
@@ -64,19 +62,24 @@ public class TelegramBot extends TelegramLongPollingBot {
         return username;
     }
 
-    private SendMessage getTelegramOutMessage(BotMessage newMessage){
+    private void getTelegramOutMessage(BotMessage newMessage) throws TelegramApiException {
         SendMessage outMessage = new SendMessage();
+        outMessage.setChatId(newMessage.getUserId());
 
         if (newMessage.getText().length() > 14 &&
                 Objects.equals(newMessage.getText().substring(0, 15), "Выберите регион")) {
             outMessage.setText("Выберите регион:");
             setInlineKeyBoardToMessage(outMessage);
+            execute(outMessage);
         } else {
             outMessage.setText(newMessage.getText());
+            execute(outMessage);
+            if(newMessage.multipleMessages){
+                outMessage.setText(newMessage.getText2());
+                execute(outMessage);
+            }
             setReplyKeyBoardToMessage(outMessage, newMessage.getGameMode());
         }
-        outMessage.setChatId(newMessage.getUserId());
-        return outMessage;
     }
 
     private static void setReplyKeyBoardToMessage(SendMessage outMessage, Boolean gameMode) {

@@ -21,51 +21,53 @@ public class BotLogic {
     public BotMessage getNewMessage(BotMessage message){
         String text = message.getText();
         userId = message.getUserId();
+        BotMessage newMessage;
 
         if (!users.containsKey(userId))
             users.put(userId, new User(userId));
 
         if (!text.isEmpty() && text.charAt(0) == '/')
-            text = responseToCommand(text);
+            newMessage = responseToCommand(text);
         else if(users.get(userId).gameMode)
-            text = responseToMessageInGameMode(text);
+            newMessage = responseToMessageInGameMode(text);
         else
-            text = "Для начала введите /start";
+            newMessage =  new BotMessage("Для начала введите /start", userId);
 
-        BotMessage newMessage = new BotMessage(text, message.getUserId());
         newMessage.setGameMode(users.get(userId).gameMode);
         return newMessage;
     }
 
-    private String responseToCommand(String text) {
+    private BotMessage responseToCommand(String text) {
         switch (text) {
             case ("/start"):
-                return "Привет! Я бот-географ.\n" +
-                        "Чтобы посмотреть список моих команд, введите /help";
+                return new BotMessage("Привет! Я бот-географ.\n" +
+                        "Чтобы посмотреть список моих команд, введите /help", userId);
             case ("/help"):
-                return "/start - информация о боте,\n" +
+                return new BotMessage("/start - информация о боте,\n" +
                         "/newgame - начать новую игру,\n" +
                         "/stop - остановить игру\n" +
-                        "/stat - статистика по всем регионам";
+                        "/stat - статистика по всем регионам",
+                        userId);
             case ("/stop"):
                 if (users.get(userId).gameMode){
                     users.get(userId).finishTheGame();
-                    return String.format("Ваш счёт: %d", users.get(userId).resetScore());
+                    return new BotMessage(String.format("Ваш счёт: %d", users.get(userId).resetScore()),
+                            userId);
                 }
                 else {
-                    return "Для начала введите /start";
+                    return new BotMessage("Для начала введите /start", userId);
                 }
             case ("/newgame"):
                 users.get(userId).gameMode = true;
-                return "Выберите игру: \nНазови столицу\nУгадай страну";
+                return new BotMessage("Выберите игру: \nНазови столицу\nУгадай страну", userId);
             case ("/stat"):
-                return users.get(userId).getStat();
+                return new BotMessage(users.get(userId).getStat(), userId);
             default:
-                return "Это не команда";
+                return new BotMessage("Это не команда", userId);
         }
     }
 
-    private String responseToMessageInGameMode(String msg) {
+    private BotMessage responseToMessageInGameMode(String msg) {
         User user = users.get(userId);
         if (user.isNameTheCapitalGame) {
             if (user.isRegionChosen) {
@@ -81,12 +83,13 @@ public class BotLogic {
             switch (msg.toLowerCase()) {
                 case ("назови столицу"):
                     user.isNameTheCapitalGame = true;
-                    return "Выберите регион: \nЕвропа\nАзия\nАмерика\nАфрика\nАвстралия и Океания";
+                    return new BotMessage("Выберите регион: \nЕвропа\nАзия\nАмерика\nАфрика\nАвстралия и Океания",
+                            userId);
                 case ("угадай страну"):
                     user.isGuessTheCountryGame = true;
                     return guessTheCountryGame.startNewGame(user);
                 default:
-                    return "Такой игры нет :(";
+                    return new BotMessage("Такой игры нет :(", userId);
             }
         }
     }
