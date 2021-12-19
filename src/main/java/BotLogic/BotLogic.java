@@ -1,6 +1,10 @@
 package BotLogic;
 
 import Users.User;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+
+import java.io.FileReader;
 import java.util.HashMap;
 
 public class BotLogic {
@@ -10,12 +14,22 @@ public class BotLogic {
     private final NameTheCapitalGame nameTheCapitalGame;
     private final GuessTheCountryGame guessTheCountryGame;
     private Long userId;
+    private JSONObject json;
 
-    public BotLogic(){
+
+    public BotLogic() {
         users = new HashMap<>();
         regionStore = new RegionStore();
         nameTheCapitalGame = new NameTheCapitalGame();
         guessTheCountryGame = new GuessTheCountryGame();
+
+        try (FileReader reader = new FileReader("src/main/resources/commands.json")) {
+            Object obj = new JSONParser().parse(reader);
+            json = (JSONObject)obj;
+        }
+        catch (Exception e) {
+            System.out.println(e);
+        }
     }
 
     public BotMessage getNewMessage(BotMessage message){
@@ -31,7 +45,7 @@ public class BotLogic {
         else if(users.get(userId).gameMode)
             newMessage = responseToMessageInGameMode(text);
         else
-            newMessage =  new BotMessage("Для начала введите /start", userId);
+            newMessage = new BotMessage("Для начала введите /start", userId);
 
         newMessage.setGameMode(users.get(userId).gameMode);
         return newMessage;
@@ -40,14 +54,11 @@ public class BotLogic {
     private BotMessage responseToCommand(String text) {
         switch (text) {
             case ("/start"):
-                return new BotMessage("Привет! Я бот-географ.\n" +
-                        "Чтобы посмотреть список моих команд, введите /help", userId);
+                return new BotMessage((String)json.get("start"), userId);
             case ("/help"):
-                return new BotMessage("/start - информация о боте,\n" +
-                        "/newgame - начать новую игру,\n" +
-                        "/stop - остановить игру\n" +
-                        "/stat - статистика по всем регионам",
-                        userId);
+                return new BotMessage((String)json.get("help"), userId);
+            case ("/info"):
+                return new BotMessage((String)json.get("info"), userId);
             case ("/stop"):
                 if (users.get(userId).gameMode){
                     users.get(userId).finishTheGame();
@@ -59,7 +70,9 @@ public class BotLogic {
                 }
             case ("/newgame"):
                 users.get(userId).gameMode = true;
-                return new BotMessage("Выберите игру: \nНазови столицу\nУгадай страну", userId);
+                var bm = new  BotMessage("Выберите игру:", userId);
+                bm.setButtons(new String[]{"Назови столицу", "Угадай страну"});
+                return bm;
             case ("/stat"):
                 return new BotMessage(users.get(userId).getStat(), userId);
             default:
@@ -83,8 +96,9 @@ public class BotLogic {
             switch (msg.toLowerCase()) {
                 case ("назови столицу"):
                     user.isNameTheCapitalGame = true;
-                    return new BotMessage("Выберите регион: \nЕвропа\nАзия\nАмерика\nАфрика\nАвстралия и Океания",
-                            userId);
+                    var bm = new BotMessage("Выберите регион:", userId);
+                    bm.setButtons(regionStore.regions);
+                    return bm;
                 case ("угадай страну"):
                     user.isGuessTheCountryGame = true;
                     return guessTheCountryGame.startNewGame(user);

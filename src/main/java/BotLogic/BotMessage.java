@@ -6,11 +6,15 @@ public class BotMessage {
     public boolean multipleMessages;
     private Long userId;
     private Boolean gameMode;
+    private String[] buttons;
+    public boolean buttonsFlag;
 
     public BotMessage(String text, Long userId){
         this.text = text;
         this.userId = userId;
         multipleMessages = false;
+        buttonsFlag = false;
+        gameMode = false;
     }
 
     public BotMessage(String text, String text2, Long userId){
@@ -18,6 +22,8 @@ public class BotMessage {
         this.text2 = text2;
         this.userId = userId;
         multipleMessages = true;
+        buttonsFlag = false;
+        gameMode = false;
     }
 
     public void setUserId(Long userId) {
@@ -46,5 +52,14 @@ public class BotMessage {
 
     public Boolean getGameMode() {
         return gameMode;
+    }
+
+    public void setButtons(String[] buttons) {
+        this.buttons = buttons;
+        buttonsFlag = true;
+    }
+
+    public String[] getButtons() {
+        return buttons;
     }
 }

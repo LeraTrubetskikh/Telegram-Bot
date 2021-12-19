@@ -21,13 +21,11 @@ public class TelegramBot extends TelegramLongPollingBot {
     private final String token;
     private final String username;
     private final BotLogic botLogic;
-    private static RegionStore regionStore;
 
     public TelegramBot(String token, String username, BotLogic botLogic) {
         this.token = token;
         this.username = username;
         this.botLogic = botLogic;
-        regionStore = new RegionStore();
     }
 
     @Override
@@ -66,19 +64,18 @@ public class TelegramBot extends TelegramLongPollingBot {
         SendMessage outMessage = new SendMessage();
         outMessage.setChatId(newMessage.getUserId());
 
-        if (newMessage.getText().length() > 14 &&
-                Objects.equals(newMessage.getText().substring(0, 15), "Выберите регион")) {
-            outMessage.setText("Выберите регион:");
-            setInlineKeyBoardToMessage(outMessage);
+        if (newMessage.buttonsFlag) {
+            outMessage.setText(newMessage.getText());
+            setInlineKeyBoardToMessage(outMessage, newMessage.getButtons());
             execute(outMessage);
         } else {
             outMessage.setText(newMessage.getText());
+            setReplyKeyBoardToMessage(outMessage, newMessage.getGameMode());
             execute(outMessage);
             if(newMessage.multipleMessages){
                 outMessage.setText(newMessage.getText2());
                 execute(outMessage);
             }
-            setReplyKeyBoardToMessage(outMessage, newMessage.getGameMode());
         }
     }
 
@@ -99,6 +96,7 @@ public class TelegramBot extends TelegramLongPollingBot {
             KeyboardRow keyboardSecondRow = new KeyboardRow();
             keyboardSecondRow.add(new KeyboardButton("/help"));
             keyboardSecondRow.add(new KeyboardButton("/stat"));
+            keyboardSecondRow.add(new KeyboardButton("/info"));
 
             keyboard.add(keyboardFirstRow);
             keyboard.add(keyboardSecondRow);
@@ -110,11 +108,11 @@ public class TelegramBot extends TelegramLongPollingBot {
         replyKeyboardMarkup.setKeyboard(keyboard);
     }
 
-    private static void setInlineKeyBoardToMessage(SendMessage outMessage) {
+    private static void setInlineKeyBoardToMessage(SendMessage outMessage, String[] buttons) {
         InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
         List<List<InlineKeyboardButton>> rowList = new ArrayList<>();
 
-        for (var i = 0; i < 5;) {
+        for (var i = 0; i < buttons.length;) {
             List<InlineKeyboardButton> keyboardButtonsRow = new ArrayList<>();
 
             var to = 2;
@@ -123,8 +121,8 @@ public class TelegramBot extends TelegramLongPollingBot {
 
             for (var j = 0; j < to; j++) {
                 InlineKeyboardButton inlineKeyboardButton = new InlineKeyboardButton();
-                inlineKeyboardButton.setText(regionStore.regions[i]);
-                inlineKeyboardButton.setCallbackData(regionStore.regions[i]);
+                inlineKeyboardButton.setText(buttons[i]);
+                inlineKeyboardButton.setCallbackData(buttons[i]);
                 keyboardButtonsRow.add(inlineKeyboardButton);
                 i++;
             }
