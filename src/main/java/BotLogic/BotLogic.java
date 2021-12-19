@@ -70,7 +70,7 @@ public class BotLogic {
                 }
             case ("/newgame"):
                 users.get(userId).gameMode = true;
-                var bm = new  BotMessage("Выберите игру:", userId);
+                var bm = new  BotMessage("Выберите игру:", "Назови столицу или угадай страну", userId);
                 bm.setButtons(new String[]{"Назови столицу", "Угадай страну"});
                 return bm;
             case ("/stat"):
@@ -96,7 +96,8 @@ public class BotLogic {
             switch (msg.toLowerCase()) {
                 case ("назови столицу"):
                     user.isNameTheCapitalGame = true;
-                    var bm = new BotMessage("Выберите регион:", userId);
+                    var bm = new BotMessage("Выберите регион:",
+                            "Европа\nАзия\nАмерика\nАфрика\nАвстралия и Океания\nВсе регионы", userId);
                     bm.setButtons(regionStore.regions);
                     return bm;
                 case ("угадай страну"):
