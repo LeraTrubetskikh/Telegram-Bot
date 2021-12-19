@@ -34,7 +34,7 @@ public class TelegramBot extends TelegramLongPollingBot {
             try {
                 Message inMessage = update.getMessage();
                 BotMessage newMessage = botLogic.getNewMessage(new BotMessage(inMessage.getText(), inMessage.getChatId()));
-                getTelegramOutMessage(newMessage);
+                sendTelegramOutMessage(newMessage);
             } catch (TelegramApiException e) {
                 e.printStackTrace();
             }
@@ -43,7 +43,7 @@ public class TelegramBot extends TelegramLongPollingBot {
                 BotMessage botMessage = new BotMessage(update.getCallbackQuery().getData(),
                         update.getCallbackQuery().getMessage().getChatId());
                 BotMessage newMessage = botLogic.getNewMessage(botMessage);
-                getTelegramOutMessage(newMessage);
+                sendTelegramOutMessage(newMessage);
             } catch (TelegramApiException e) {
                 e.printStackTrace();
             }
@@ -60,7 +60,7 @@ public class TelegramBot extends TelegramLongPollingBot {
         return username;
     }
 
-    private void getTelegramOutMessage(BotMessage newMessage) throws TelegramApiException {
+    private void sendTelegramOutMessage(BotMessage newMessage) throws TelegramApiException {
         SendMessage outMessage = new SendMessage();
         outMessage.setChatId(newMessage.getUserId());
 
@@ -70,7 +70,7 @@ public class TelegramBot extends TelegramLongPollingBot {
             execute(outMessage);
         } else {
             outMessage.setText(newMessage.getText());
-            setReplyKeyBoardToMessage(outMessage, newMessage.getGameMode());
+            setReplyKeyBoardToMessage(outMessage, newMessage.getGameMode(), newMessage.getIsHaveHint());
             execute(outMessage);
             if(newMessage.multipleMessages){
                 outMessage.setText(newMessage.getText2());
@@ -79,7 +79,7 @@ public class TelegramBot extends TelegramLongPollingBot {
         }
     }
 
-    private static void setReplyKeyBoardToMessage(SendMessage outMessage, Boolean gameMode) {
+    private static void setReplyKeyBoardToMessage(SendMessage outMessage, Boolean gameMode, Boolean isHaveHint) {
         ReplyKeyboardMarkup replyKeyboardMarkup = new ReplyKeyboardMarkup();
         outMessage.setReplyMarkup(replyKeyboardMarkup);
         replyKeyboardMarkup.setSelective(true);
@@ -102,6 +102,9 @@ public class TelegramBot extends TelegramLongPollingBot {
             keyboard.add(keyboardSecondRow);
         }
         else {
+            if (isHaveHint) {
+                keyboardFirstRow.add(new KeyboardButton("Подсказка!"));
+            }
             keyboardFirstRow.add(new KeyboardButton("/stop"));
             keyboard.add(keyboardFirstRow);
         }

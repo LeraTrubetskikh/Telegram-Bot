@@ -1,19 +1,21 @@
 package BotLogic;
 
 public class BotMessage {
+    public boolean multipleMessages;
+    public boolean buttonsFlag;
+    public Boolean isHaveHint;
     private String text;
     private String text2;
-    public boolean multipleMessages;
     private Long userId;
     private Boolean gameMode;
     private String[] buttons;
-    public boolean buttonsFlag;
 
     public BotMessage(String text, Long userId){
         this.text = text;
         this.userId = userId;
         multipleMessages = false;
         buttonsFlag = false;
+        isHaveHint = false;
         gameMode = false;
     }
 
@@ -23,6 +25,7 @@ public class BotMessage {
         this.userId = userId;
         multipleMessages = true;
         buttonsFlag = false;
+        isHaveHint = false;
         gameMode = false;
     }
 
@@ -53,6 +56,8 @@ public class BotMessage {
     public Boolean getGameMode() {
         return gameMode;
     }
+
+    public Boolean getIsHaveHint() { return isHaveHint; }
 
     public void setButtons(String[] buttons) {
         this.buttons = buttons;

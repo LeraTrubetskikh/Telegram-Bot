@@ -9,6 +9,7 @@ public class User {
     public Boolean isRegionChosen;
     public Boolean isNameTheCapitalGame;
     public Boolean isGuessTheCountryGame;
+    public Integer hintCounter;
     private final Long id;
     private final ScoreCounter score;
 
@@ -19,6 +20,7 @@ public class User {
         isGuessTheCountryGame = false;
         gameMode = false;
         isRegionChosen = false;
+        hintCounter = 0;
     }
 
     public Long getID() { // нигде не используется но пусть будет?
@@ -51,5 +53,6 @@ public class User {
         isRegionChosen = false;
         isNameTheCapitalGame = false;
         isGuessTheCountryGame = false;
+        hintCounter = 0;
     }
 }
