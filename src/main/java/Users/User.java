@@ -10,6 +10,7 @@ public class User {
     public Boolean isNameTheCapitalGame;
     public Boolean isGuessTheCountryGame;
     public Integer hintCounter;
+    private String answerToPreviousTask;
     private final Long id;
     private final ScoreCounter score;
 
@@ -46,6 +47,10 @@ public class User {
     public String getStat() {
         return score.getStat();
     }
+
+    public String getAnswerToPreviousTask() { return answerToPreviousTask; }
+
+    public void updatePreviousAnswer() { answerToPreviousTask = lastTask.getAnswer(); }
 
     public void finishTheGame(){
         score.updateStat();
