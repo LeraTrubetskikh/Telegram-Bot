@@ -66,7 +66,10 @@ public class GuessTheCountryGame{
     private BotMessage getHint(User user){
         BotMessage message;
         if (user.hintCounter < 5){
-            user.hintCounter += 1;
+            if (!task.getAnswer().equals(user.getAnswerToPreviousTask())){
+                user.hintCounter += 1;
+                user.updatePreviousAnswer();
+            }
             String firstLetter = String.valueOf(task.getAnswer().charAt(0));
             message = new BotMessage(String.format("Первая буква %s", firstLetter), user.getID());
         }
