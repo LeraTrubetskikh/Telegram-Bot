@@ -21,13 +21,11 @@ public class TelegramBot extends TelegramLongPollingBot {
     private final String token;
     private final String username;
     private final BotLogic botLogic;
-    private static RegionStore regionStore;
 
     public TelegramBot(String token, String username, BotLogic botLogic) {
         this.token = token;
         this.username = username;
         this.botLogic = botLogic;
-        regionStore = new RegionStore();
     }
 
     @Override
@@ -36,18 +34,7 @@ public class TelegramBot extends TelegramLongPollingBot {
             try {
                 Message inMessage = update.getMessage();
                 BotMessage newMessage = botLogic.getNewMessage(new BotMessage(inMessage.getText(), inMessage.getChatId()));
-                SendMessage outMessage = new SendMessage();
-
-                if (newMessage.getText().length() > 14 &&
-                        Objects.equals(newMessage.getText().substring(0, 15), "Выберите регион")) {
-                    outMessage.setText("Выберите регион:");
-                    setInlineKeyBoardToMessage(outMessage);
-                } else {
-                    outMessage.setText(newMessage.getText());
-                    setReplyKeyBoardToMessage(outMessage, newMessage.getGameMode());
-                }
-                outMessage.setChatId(newMessage.getUserId());
-                execute(outMessage);
+                sendTelegramOutMessage(newMessage);
             } catch (TelegramApiException e) {
                 e.printStackTrace();
             }
@@ -56,12 +43,7 @@ public class TelegramBot extends TelegramLongPollingBot {
                 BotMessage botMessage = new BotMessage(update.getCallbackQuery().getData(),
                         update.getCallbackQuery().getMessage().getChatId());
                 BotMessage newMessage = botLogic.getNewMessage(botMessage);
-
-                SendMessage outMessage = new SendMessage();
-                outMessage.setText(newMessage.getText());
-                outMessage.setChatId(newMessage.getUserId());
-                setReplyKeyBoardToMessage(outMessage, newMessage.getGameMode());
-                execute(outMessage);
+                sendTelegramOutMessage(newMessage);
             } catch (TelegramApiException e) {
                 e.printStackTrace();
             }
@@ -78,7 +60,26 @@ public class TelegramBot extends TelegramLongPollingBot {
         return username;
     }
 
-    private static void setReplyKeyBoardToMessage(SendMessage outMessage, Boolean gameMode) {
+    private void sendTelegramOutMessage(BotMessage newMessage) throws TelegramApiException {
+        SendMessage outMessage = new SendMessage();
+        outMessage.setChatId(newMessage.getUserId());
+
+        if (newMessage.buttonsFlag) {
+            outMessage.setText(newMessage.getText());
+            setInlineKeyBoardToMessage(outMessage, newMessage.getButtons());
+            execute(outMessage);
+        } else {
+            outMessage.setText(newMessage.getText());
+            setReplyKeyBoardToMessage(outMessage, newMessage.getGameMode(), newMessage.getIsHaveHint());
+            execute(outMessage);
+            if(newMessage.multipleMessages){
+                outMessage.setText(newMessage.getText2());
+                execute(outMessage);
+            }
+        }
+    }
+
+    private static void setReplyKeyBoardToMessage(SendMessage outMessage, Boolean gameMode, Boolean isHaveHint) {
         ReplyKeyboardMarkup replyKeyboardMarkup = new ReplyKeyboardMarkup();
         outMessage.setReplyMarkup(replyKeyboardMarkup);
         replyKeyboardMarkup.setSelective(true);
@@ -95,22 +96,26 @@ public class TelegramBot extends TelegramLongPollingBot {
             KeyboardRow keyboardSecondRow = new KeyboardRow();
             keyboardSecondRow.add(new KeyboardButton("/help"));
             keyboardSecondRow.add(new KeyboardButton("/stat"));
+            keyboardSecondRow.add(new KeyboardButton("/info"));
 
             keyboard.add(keyboardFirstRow);
             keyboard.add(keyboardSecondRow);
         }
         else {
+            if (isHaveHint) {
+                keyboardFirstRow.add(new KeyboardButton("Подсказка!"));
+            }
             keyboardFirstRow.add(new KeyboardButton("/stop"));
             keyboard.add(keyboardFirstRow);
         }
         replyKeyboardMarkup.setKeyboard(keyboard);
     }
 
-    private static void setInlineKeyBoardToMessage(SendMessage outMessage) {
+    private static void setInlineKeyBoardToMessage(SendMessage outMessage, String[] buttons) {
         InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
         List<List<InlineKeyboardButton>> rowList = new ArrayList<>();
 
-        for (var i = 0; i < 5;) {
+        for (var i = 0; i < buttons.length;) {
             List<InlineKeyboardButton> keyboardButtonsRow = new ArrayList<>();
 
             var to = 2;
@@ -119,8 +124,8 @@ public class TelegramBot extends TelegramLongPollingBot {
 
             for (var j = 0; j < to; j++) {
                 InlineKeyboardButton inlineKeyboardButton = new InlineKeyboardButton();
-                inlineKeyboardButton.setText(regionStore.regions[i]);
-                inlineKeyboardButton.setCallbackData(regionStore.regions[i]);
+                inlineKeyboardButton.setText(buttons[i]);
+                inlineKeyboardButton.setCallbackData(buttons[i]);
                 keyboardButtonsRow.add(inlineKeyboardButton);
                 i++;
             }

@@ -1,112 +1,111 @@
 package BotLogic;
 
-import Questions.Question;
-import Questions.QuestionGenerator;
 import Users.User;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 
-import java.util.Arrays;
+import java.io.FileReader;
 import java.util.HashMap;
 
 public class BotLogic {
 
     public final RegionStore regionStore;
     private final HashMap<Long, User> users;
+    private final NameTheCapitalGame nameTheCapitalGame;
+    private final GuessTheCountryGame guessTheCountryGame;
     private Long userId;
-    private final QuestionGenerator questionGenerator;
-    private Question question;
+    private JSONObject json;
 
-    public BotLogic(){
+
+    public BotLogic() {
         users = new HashMap<>();
-        questionGenerator = new QuestionGenerator();
-        question = new Question();
         regionStore = new RegionStore();
+        nameTheCapitalGame = new NameTheCapitalGame();
+        guessTheCountryGame = new GuessTheCountryGame();
+
+        try (FileReader reader = new FileReader("src/main/resources/commands.json")) {
+            Object obj = new JSONParser().parse(reader);
+            json = (JSONObject)obj;
+        }
+        catch (Exception e) {
+            System.out.println(e);
+        }
     }
 
     public BotMessage getNewMessage(BotMessage message){
         String text = message.getText();
         userId = message.getUserId();
+        BotMessage newMessage;
 
         if (!users.containsKey(userId))
             users.put(userId, new User(userId));
-        else
-            question = users.get(userId).lastQuestion;
 
         if (!text.isEmpty() && text.charAt(0) == '/')
-            text = responseToCommand(text);
+            newMessage = responseToCommand(text);
         else if(users.get(userId).gameMode)
-            if (users.get(userId).isRegionChosen)
-                text = responseToMessage(text);
-            else
-                text = responseToRegionChoice(text);
+            newMessage = responseToMessageInGameMode(text);
         else
-            text = "Для начала введите /start";
+            newMessage = new BotMessage("Для начала введите /start", userId);
 
-        users.get(userId).setQuestion(question);
-        BotMessage newMessage = new BotMessage(text, message.getUserId());
         newMessage.setGameMode(users.get(userId).gameMode);
         return newMessage;
     }
 
-    private String responseToCommand(String text) {
+    private BotMessage responseToCommand(String text) {
         switch (text) {
             case ("/start"):
-                return "Привет! Я бот для изучения столиц стран мира.\n" +
-                        "Чтобы посмотреть список моих команд, введите /help";
+                return new BotMessage((String)json.get("start"), userId);
             case ("/help"):
-                return "/start - информация о боте,\n" +
-                        "/newgame - начать новую игру,\n" +
-                        "/stop - остановить игру\n" +
-                        "/stat - статистика по всем регионам";
+                return new BotMessage((String)json.get("help"), userId);
+            case ("/info"):
+                return new BotMessage((String)json.get("info"), userId);
             case ("/stop"):
                 if (users.get(userId).gameMode){
-                    users.get(userId).gameMode = false;
-                    users.get(userId).isRegionChosen = false;
-                    return String.format("Ваш счёт: %d", users.get(userId).getScore());
+                    users.get(userId).finishTheGame();
+                    return new BotMessage(String.format("Ваш счёт: %d", users.get(userId).resetScore()),
+                            userId);
                 }
                 else {
-                    return "Для начала введите /start";
+                    return new BotMessage("Для начала введите /start", userId);
                 }
-            case ("/newgame"):{
+            case ("/newgame"):
                 users.get(userId).gameMode = true;
-                return "Выберите регион: \nЕвропа,\nАзия,\nАмерика,\nАфрика,\nАвстралия и Океания";}
+                var bm = new  BotMessage("Выберите игру:", "Назови столицу или угадай страну", userId);
+                bm.setButtons(new String[]{"Назови столицу", "Угадай страну"});
+                return bm;
             case ("/stat"):
-                return users.get(userId).getStat();
+                return new BotMessage(users.get(userId).getStat(), userId);
             default:
-                return "Это не команда";
+                return new BotMessage("Это не команда", userId);
         }
     }
 
-    private String responseToMessage(String msg){
-        if (msg.equalsIgnoreCase(question.getAnswer())) {
-            question = questionGenerator.getQuestion(users.get(userId).region);
-            users.get(userId).addPoints();
-            if (question == null) {
-                var score = users.get(userId).getScore();
-                users.get(userId).finishTheGame();
-                return String.format("Правильно!\nВаш счёт: %d", score);
+    private BotMessage responseToMessageInGameMode(String msg) {
+        User user = users.get(userId);
+        if (user.isNameTheCapitalGame) {
+            if (user.isRegionChosen) {
+                return nameTheCapitalGame.responseToMessage(user, msg);
+            } else {
+                return nameTheCapitalGame.startNewGame(user, msg);
             }
-            return "Правильно!" + "\n" + question.getQuestion();
-        } else {
-            question = questionGenerator.getQuestion(users.get(userId).region);
-            if (question == null) {
-                var score = users.get(userId).getScore();
-                users.get(userId).finishTheGame();
-                return String.format("Неправильно!\nВаш счёт: %d", score);
-            }
-            return "Неправильно!" + "\n" + question.getQuestion();
         }
-    }
-
-    private String responseToRegionChoice(String region){
-        String capitalizedRegion = Character.toUpperCase(region.charAt(0)) + region.substring(1).toLowerCase();
-        if (Arrays.asList(regionStore.regions).contains(capitalizedRegion)){
-            users.get(userId).isRegionChosen = true;
-            users.get(userId).region = capitalizedRegion;
-            question = questionGenerator.getQuestion(capitalizedRegion);
-            return question.getQuestion();
+        else if (user.isGuessTheCountryGame) {
+            return guessTheCountryGame.responseToMessage(user, msg);
         }
         else {
-            return "Нет такого региона!";
+            switch (msg.toLowerCase()) {
+                case ("назови столицу"):
+                    user.isNameTheCapitalGame = true;
+                    var bm = new BotMessage("Выберите регион:",
+                            "Европа\nАзия\nАмерика\nАфрика\nАвстралия и Океания\nВсе регионы", userId);
+                    bm.setButtons(regionStore.regions);
+                    return bm;
+                case ("угадай страну"):
+                    user.isGuessTheCountryGame = true;
+                    return guessTheCountryGame.startNewGame(user);
+                default:
+                    return new BotMessage("Такой игры нет :(", userId);
+            }
         }
     }
 }

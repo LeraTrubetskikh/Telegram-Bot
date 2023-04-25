@@ -1,14 +1,16 @@
-package Questions;
+package Tasks;
 
-public class Question {
-    public String country;
+public class Question implements IGameTask {
+
     public String capital;
     private String countryGenitive;
 
-    public String getQuestion(){
+    @Override
+    public String getTask() {
         return String.format("Столица %s?", countryGenitive);
     }
 
+    @Override
     public String getAnswer(){
         return capital;
     }

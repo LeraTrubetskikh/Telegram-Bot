@@ -19,6 +19,8 @@ public class ConsoleBot {
             inMessage.setText(scanner.nextLine());
             BotMessage outMessage = botLogic.getNewMessage(inMessage);
             System.out.println(outMessage.getText());
+            if(outMessage.multipleMessages)
+                System.out.println(outMessage.getText2());
         }
     }
 }

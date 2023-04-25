@@ -1,74 +1,63 @@
 package Users;
 
-import BotLogic.BotLogic;
-import BotLogic.RegionStore;
-import Questions.Question;
-
-import java.util.HashMap;
+import Tasks.IGameTask;
 
 public class User {
 
-    public Question lastQuestion;
+    public IGameTask lastTask;
     public Boolean gameMode;
     public Boolean isRegionChosen;
-    public String region;
-    public HashMap<String, Integer> bestScore;
+    public Boolean isNameTheCapitalGame;
+    public Boolean isGuessTheCountryGame;
+    public Integer hintCounter;
+    private String answerToPreviousTask;
     private final Long id;
-    private int score;
-    private final RegionStore regionStore;
+    private final ScoreCounter score;
 
     public User(Long id) {
         this.id = id;
-        regionStore = new RegionStore();
-        score = 0;
-        lastQuestion = new Question();
+        score = new ScoreCounter();
+        isNameTheCapitalGame = false;
+        isGuessTheCountryGame = false;
         gameMode = false;
         isRegionChosen = false;
-        region = "";
-        bestScore = new HashMap<>();
-        initializeBestScoreHashMap();
+        hintCounter = 0;
     }
 
     public Long getID() { // нигде не используется но пусть будет?
         return id;
     }
 
-    public int getScore() {
-        return score;
+    public void setTask(IGameTask task) {
+        lastTask = task;
     }
 
-    public void setQuestion(Question question) {
-        lastQuestion = question;
+    public void setScoreRegion(String region){
+        score.setRegion(region);
     }
 
     public void addPoints() { // названия?
-        score++;
+        score.add();
     }
 
-    public void resetScore() {
-        score = 0;
+    public int resetScore() {
+        return score.resetScore();
     }
 
     public String getStat() {
-        StringBuilder sb = new StringBuilder();
-
-        for (String key : bestScore.keySet()) {
-            sb.append(String.format("%s: %d\n", key, bestScore.get(key)));
-        }
-        return sb.toString();
+        return score.getStat();
     }
+
+    public String getAnswerToPreviousTask() { return answerToPreviousTask; }
+
+    public void updatePreviousAnswer() { answerToPreviousTask = lastTask.getAnswer(); }
 
     public void finishTheGame(){
-        if (bestScore.get(region) < score)
-            bestScore.put(region, score);
-        resetScore();
+        score.updateStat();
         gameMode = false;
         isRegionChosen = false;
-    }
-
-    private void initializeBestScoreHashMap(){
-        for (String s : regionStore.regions) {
-            bestScore.put(s, 0);
-        }
+        isNameTheCapitalGame = false;
+        isGuessTheCountryGame = false;
+        hintCounter = 0;
     }
 }
